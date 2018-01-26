@@ -6,7 +6,8 @@ namespace WebServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var server = new Http.WebServer();
+            Console.ReadLine();   
         }
     }
 }
