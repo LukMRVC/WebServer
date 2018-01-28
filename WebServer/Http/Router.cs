@@ -49,7 +49,7 @@ namespace WebServer.Http
             ResponseObject responseObject = new ResponseObject();
             try
             {
-                responseObject = FileFinder.ReadFile(request.Url.AbsolutePath.Substring(1));
+                responseObject = FileFinder.GetFile(request.Url.AbsolutePath.Substring(1));
                 if (responseObject.Content == null)
                 {
                     responseObject.Content = GenerateErrorPage(HttpStatusCode.InternalServerError);

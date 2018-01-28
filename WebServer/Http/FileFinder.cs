@@ -13,6 +13,11 @@ namespace WebServer.Http
 
         private static string SanitizeFilename(string filename)
         {
+            if (filename.Contains("\'"))
+            {
+                filename = filename.Trim('\'');
+            }
+
             string relative = "html/";
             if (filename.EndsWith('/')) {
                 relative += filename;
@@ -33,7 +38,7 @@ namespace WebServer.Http
             return filename;
         }
 
-        public static ResponseObject ReadFile(string name)
+        public static StreamReader ReadFile(string name)
         {
             string filename = SanitizeFilename(name);
             StreamReader fs = null;
@@ -56,9 +61,24 @@ namespace WebServer.Http
                 }
                 return null;
             }
-            if(Path.GetExtension(filename) == ".html")
-                return TempEngine.TempEngine.Render(fs);
-            return new ResponseObject(filename, new MemoryStream(Encoding.UTF8.GetBytes(fs.ReadToEnd())));
+
+            return fs;
+
+        }
+
+        public static ResponseObject GetFile(string name)
+        {
+            StreamReader sr = ReadFile(name);
+            if (Path.HasExtension(name))
+            {
+                return new ResponseObject(name, new MemoryStream(Encoding.UTF8.GetBytes(sr.ReadToEnd())));
+            }
+            else
+            {
+                return TempEngine.TempEngine.Render(sr);
+            }
+
+
 
         }
     }
