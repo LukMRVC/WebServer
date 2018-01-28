@@ -29,6 +29,8 @@ namespace WebServer.TempEngine
 
         }
 
+
+        // I have to bug fix multiple Imports
         public static string FindSection(string sectionName, string html)
         {
             string section = "{{ section start " + sectionName + " }}";
@@ -36,7 +38,7 @@ namespace WebServer.TempEngine
             int end = 0;
             if (start != -1)
             {
-                end = html.IndexOf("{{ section end }}", StringComparison.OrdinalIgnoreCase);
+                end = html.IndexOf("{{ section end }}", start, StringComparison.OrdinalIgnoreCase);
                 if (end == -1)
                     throw new SectionNotFoundException(string.Format("Section {0} ending was not found.", sectionName));
             }
