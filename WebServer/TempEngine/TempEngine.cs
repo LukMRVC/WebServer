@@ -11,7 +11,7 @@ namespace WebServer.TempEngine
             int start = rawHtml.IndexOf("{{");
             var keywords = new List<Keyword>();
             if (start == -1)
-                return null;
+                return keywords;
             int end = rawHtml.IndexOf("}}");
             int length;
             
@@ -32,11 +32,13 @@ namespace WebServer.TempEngine
 
         //This could solve finding right section if they are nested
         private static int FindEndsection(string html, int from){
-            int nested, ending;.
+            int nested, ending;
             ending = html.IndexOf("{{ section end }}", from, StringComparison.OrdinalIgnoreCase);
             nested = html.IndexOf("{{ section start ", from, StringComparison.OrdinalIgnoreCase);
-            if( (nested != -1 || ending != -1) && nested < ending){
-                ending = FindSection(html, ending);
+            if ((nested != -1 && ending != -1) && nested < ending)
+            {
+                ending = FindEndsection(html, ending);
+            }
             return ending;
         }
 
@@ -44,7 +46,6 @@ namespace WebServer.TempEngine
         // I have to bug fix multiple Imports
         public static string FindSection(string sectionName, string html)
         {
-            int nested = 0;
             string section = "{{ section start " + sectionName + " }}";
             int start = html.IndexOf(section, StringComparison.OrdinalIgnoreCase) + section.Length;
             int end = 0;
@@ -67,6 +68,10 @@ namespace WebServer.TempEngine
         private static string Parse(string html) {
             int plusLength = 0;
             var keywords = FindKeywords(html).ToArray();
+            if(keywords.Length == 0)
+            {
+                return html;
+            }
             string imported = "";
             try
             {
@@ -77,13 +82,16 @@ namespace WebServer.TempEngine
                         k.MoveIndices(plusLength);
                     if (k.Type == Keyword.Types.Import) {
                         imported = k.Import();
-                        plusLength += imported.Length;
+                        plusLength += (imported.Length - k.Length);
+                        Console.WriteLine(html.IndexOf("}}"));
                         html = html.Insert(k.EndIndex, imported);
                         html = html.Remove(k.BeginIndex, k.Length);
                     }
                 }
-                if(plusLength > 0){
+                if (plusLength > 0)
+                {
                     html = Parse(html);
+                }
             }
             catch (IncorrectTemplateSyntaxException ex)
             {
@@ -92,11 +100,12 @@ namespace WebServer.TempEngine
             return html;
         }
 
-        private static string StripKeywords(string rawHtml, Keyword[] keywords) {
+        private static string StripKeywords(string rawHtml) {
             //Because deleting from string shortens it, every keyword begin index then is kinda useless
             //I should've probably delete them right as I am trying to find them, but right now
             //I will just use a variable to determine the number I have to subtract to get the right index
             int offIndex = 0;
+            var keywords = FindKeywords(rawHtml).ToArray();
             foreach (Keyword k in keywords) {
                 rawHtml = rawHtml.Remove(k.BeginIndex - offIndex, k.Length);
                 offIndex += k.Length;
@@ -111,7 +120,8 @@ namespace WebServer.TempEngine
             string processedHtml = "";
             try
             {
-                processedHtml = Parse(rawHtml);
+                var templatedHtml = Parse(rawHtml);
+                processedHtml = StripKeywords(templatedHtml);
             }
             catch (TemplateSyntaxException ex)
             {
