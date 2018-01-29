@@ -72,6 +72,11 @@ namespace WebServer.TempEngine
             this.Split = arr;
         }
 
+        public void MoveIndices(int length){
+            this.BeginIndex += length;
+            this.EndIndex += length;
+        }
+
         public string Import() {
 
             var stream = Http.FileFinder.ReadFile(Split[2]);

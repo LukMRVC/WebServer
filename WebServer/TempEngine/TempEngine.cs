@@ -30,15 +30,27 @@ namespace WebServer.TempEngine
         }
 
 
+        //This could solve finding right section if they are nested
+        private static int FindEndsection(string html, int from){
+            int nested, ending;.
+            ending = html.IndexOf("{{ section end }}", from, StringComparison.OrdinalIgnoreCase);
+            nested = html.IndexOf("{{ section start ", from, StringComparison.OrdinalIgnoreCase);
+            if( (nested != -1 || ending != -1) && nested < ending){
+                ending = FindSection(html, ending);
+            return ending;
+        }
+
+
         // I have to bug fix multiple Imports
         public static string FindSection(string sectionName, string html)
         {
+            int nested = 0;
             string section = "{{ section start " + sectionName + " }}";
             int start = html.IndexOf(section, StringComparison.OrdinalIgnoreCase) + section.Length;
             int end = 0;
             if (start != -1)
             {
-                end = html.IndexOf("{{ section end }}", start, StringComparison.OrdinalIgnoreCase);
+                end = FindEndsection(html, start);
                 if (end == -1)
                     throw new SectionNotFoundException(string.Format("Section {0} ending was not found.", sectionName));
             }
@@ -50,16 +62,28 @@ namespace WebServer.TempEngine
             return html.Substring(start, end - start);
         }
 
-        private static string AnalyzeKeywords(Keyword[] keywords, string html) {
+
+
+        private static string Parse(string html) {
+            int plusLength = 0;
+            var keywords = FindKeywords(html).ToArray();
+            string imported = "";
             try
             {
                 foreach (Keyword k in keywords)
                 {
                     k.Analyze();
+                    if(plusLength > 0)
+                        k.MoveIndices(plusLength);
                     if (k.Type == Keyword.Types.Import) {
-                        html = html.Insert(k.EndIndex, k.Import());
+                        imported = k.Import();
+                        plusLength += imported.Length;
+                        html = html.Insert(k.EndIndex, imported);
+                        html = html.Remove(k.BeginIndex, k.Length);
                     }
                 }
+                if(plusLength > 0){
+                    html = Parse(html);
             }
             catch (IncorrectTemplateSyntaxException ex)
             {
@@ -85,11 +109,9 @@ namespace WebServer.TempEngine
         {
             string rawHtml = html.ReadToEnd();
             string processedHtml = "";
-            var keywords = FindKeywords(rawHtml).ToArray();
             try
             {
-                rawHtml = AnalyzeKeywords(keywords, rawHtml);
-                processedHtml = StripKeywords(rawHtml, keywords);
+                processedHtml = Parse(rawHtml);
             }
             catch (TemplateSyntaxException ex)
             {
