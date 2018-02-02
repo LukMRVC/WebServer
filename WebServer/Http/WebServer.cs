@@ -10,7 +10,6 @@ namespace WebServer.Http
         private Router router;
         private static HttpListener listener;
 
-
         public WebServer() {
             router = new Router();
             Start();

@@ -69,6 +69,8 @@ namespace WebServer.Http
         public static ResponseObject GetFile(string name)
         {
             StreamReader sr = ReadFile(name);
+            //If requested file is not a html, it's returned directly
+            //If it is, then it is proccessed and rendered by Templating engine
             if (Path.HasExtension(name))
             {
                 return new ResponseObject(name, new MemoryStream(Encoding.UTF8.GetBytes(sr.ReadToEnd())));

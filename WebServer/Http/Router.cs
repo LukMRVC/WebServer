@@ -8,6 +8,11 @@ namespace WebServer.Http
     class Router
     {
 
+
+        public static HttpListenerResponse response;
+        public static Model.Managers.TopManager manager = new Model.Managers.TopManager();
+
+
         public static Stream GenerateStreamFromString(string s)
         {
             MemoryStream stream = new MemoryStream();
@@ -17,9 +22,6 @@ namespace WebServer.Http
             stream.Position = 0;
             return stream;
         }
-
-
-        public static HttpListenerResponse response;
 
         public static Stream GenerateErrorPage(HttpStatusCode statusCode) {
             string error = statusCode.ToString();
@@ -47,8 +49,14 @@ namespace WebServer.Http
         {
             response = HttpResponse;
             ResponseObject responseObject = new ResponseObject();
+            if (request.Url.AbsolutePath.Contains("submit"))
+            {
+                manager.InvokeMethod(request.Url, request.HttpMethod);
+                response.Redirect(@"http://localhost:1234/");
+            }
             try
             {
+                //Gets file content
                 responseObject = FileFinder.GetFile(request.Url.AbsolutePath.Substring(1));
                 if (responseObject.Content == null)
                 {

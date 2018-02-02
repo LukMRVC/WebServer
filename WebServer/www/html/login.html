@@ -2,12 +2,19 @@
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
-    <title>Login</title>
+    {{ import 'html/index.html' 'header' }}
 </head>
 <body>
     {{ import 'html/index.html' 'navbar' }}
-    <h1>Login</h1>
+    <form action="/submit/user/add" method="post">
+        First name:<br>
+        <input type="text" name="firstname" value="Mickey">
+        <br>
+        Last name:<br>
+        <input type="text" name="lastname" value="Mouse">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
     {{ import 'html/index.html' 'footer' }}
 </body>
 </html>

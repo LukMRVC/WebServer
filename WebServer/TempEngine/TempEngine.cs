@@ -10,11 +10,12 @@ namespace WebServer.TempEngine
         public static List<Keyword> FindKeywords(string rawHtml) {
             int start = rawHtml.IndexOf("{{");
             var keywords = new List<Keyword>();
+            //if keyword was not found, return empty list
             if (start == -1)
                 return keywords;
             int end = rawHtml.IndexOf("}}");
             int length;
-            
+            //between start and end should be the keyword, which I add
             keywords.Add(new Keyword(start, end, rawHtml.Substring(start, (end - start) + 2)));
             while(start < rawHtml.Length) {
                 start = rawHtml.IndexOf("{{", start + 2);
@@ -35,6 +36,8 @@ namespace WebServer.TempEngine
             int nested, ending;
             ending = html.IndexOf("{{ section end }}", from, StringComparison.OrdinalIgnoreCase);
             nested = html.IndexOf("{{ section start ", from, StringComparison.OrdinalIgnoreCase);
+            //if section start is found earlier than ending, they are nested
+            //So I skip it with recursive calling and passing ending as start index for next search of ending section
             if ((nested != -1 && ending != -1) && nested < ending)
             {
                 ending = FindEndsection(html, ending);
@@ -66,6 +69,7 @@ namespace WebServer.TempEngine
 
 
         private static string Parse(string html) {
+            //Plus length is the length of added html string, that moves index of the begging of the keyword
             int plusLength = 0;
             var keywords = FindKeywords(html).ToArray();
             if(keywords.Length == 0)
@@ -82,12 +86,13 @@ namespace WebServer.TempEngine
                         k.MoveIndices(plusLength);
                     if (k.Type == Keyword.Types.Import) {
                         imported = k.Import();
+                        //Substract length to prevent IndexOutOfRangeException, because the keyword will be removed
                         plusLength += (imported.Length - k.Length);
-                        Console.WriteLine(html.IndexOf("}}"));
                         html = html.Insert(k.EndIndex, imported);
                         html = html.Remove(k.BeginIndex, k.Length);
                     }
                 }
+                //If there were imported sections, parse html again
                 if (plusLength > 0)
                 {
                     html = Parse(html);
