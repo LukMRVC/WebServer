@@ -42,7 +42,6 @@ namespace WebServer.Http
         {
             string filename = SanitizeFilename(name);
             StreamReader fs = null;
-            
 
             if (!File.Exists(filename)) {
                 throw new FileNotFoundException(message: "File was not found");
@@ -66,8 +65,43 @@ namespace WebServer.Http
 
         }
 
+        public static Stream ReadBinaryFile(string name)
+        {
+            string filename = SanitizeFilename(name);
+
+            FileStream fs = null;
+
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException(message: "File was not found");
+            }
+
+            try
+            {
+                fs = File.Open(filename, FileMode.Open);
+            }
+            catch (IOException e)
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                }
+                return null;
+            }
+
+            return fs;
+
+
+
+        }
+
+
         public static ResponseObject GetFile(string name)
         {
+            if (Path.GetExtension(name) == ".ico")
+            {
+                return new ResponseObject(name, ReadBinaryFile(name));
+            }
             StreamReader sr = ReadFile(name);
             //If requested file is not a html, it's returned directly
             //If it is, then it is proccessed and rendered by Templating engine

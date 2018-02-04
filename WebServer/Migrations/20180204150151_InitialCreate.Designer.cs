@@ -10,9 +10,10 @@ using WebServer.Model;
 namespace WebServer.Migrations
 {
     [DbContext(typeof(MenuDbContext))]
-    partial class MenuDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180204150151_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,16 +39,11 @@ namespace WebServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(100);
+                    b.Property<string>("Name");
 
                     b.Property<int?>("ParentId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasAnnotation("MaxLength", 200);
 
                     b.ToTable("Category");
 
@@ -75,8 +71,7 @@ namespace WebServer.Migrations
 
                     b.Property<int>("Gram");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(200);
+                    b.Property<string>("Name");
 
                     b.Property<string>("Path");
 
@@ -101,10 +96,6 @@ namespace WebServer.Migrations
 
                     b.HasIndex("CategoryId")
                         .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasAnnotation("MaxLength", 200);
 
                     b.ToTable("food");
 

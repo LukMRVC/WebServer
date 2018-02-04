@@ -6,17 +6,15 @@ using System.Text;
 
 namespace WebServer.Http.REST.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
     public class RestRoute : Attribute
     {
-        public HttpMethod HttpMethod;
-        public string Resource;
+        public string HttpMethod;
         public string Route;
 
-        public RestRoute(HttpMethod HttpMethod, string Resource, string Route)
+        public RestRoute(string Route, string HttpMethod)
         {
             this.HttpMethod = HttpMethod;
-            this.Resource = Resource;
             this.Route = Route;
 
         }

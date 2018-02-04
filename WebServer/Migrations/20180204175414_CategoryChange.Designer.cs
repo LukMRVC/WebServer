@@ -10,8 +10,8 @@ using WebServer.Model;
 namespace WebServer.Migrations
 {
     [DbContext(typeof(MenuDbContext))]
-    [Migration("20180125180955_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180204175414_CategoryChange")]
+    partial class CategoryChange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,11 +41,12 @@ namespace WebServer.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("ParentId");
-
-                    b.Property<string>("Path");
+                    b.Property<int?>("ParentId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Category");
 
@@ -97,6 +98,9 @@ namespace WebServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("food");

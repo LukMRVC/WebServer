@@ -49,40 +49,50 @@ namespace WebServer.Http
         {
             response = HttpResponse;
             ResponseObject responseObject = new ResponseObject();
-            if (request.Url.AbsolutePath.Contains("submit"))
+            if (request.Url.AbsolutePath.Contains("api"))
             {
-                manager.InvokeMethod(request.Url, request.HttpMethod);
-                response.Redirect(@"http://localhost:1234/");
+                if (request.HasEntityBody)
+                {
+                    responseObject = manager.InvokeMethod(request.Url, request.HttpMethod, request.InputStream);
+
+                }
+                else
+                {
+                    responseObject = manager.InvokeMethod(request.Url, request.HttpMethod);
+                }
+                //response.Redirect(@"http://localhost:1234/");
             }
-            try
+            else
             {
-                //Gets file content
-                responseObject = FileFinder.GetFile(request.Url.AbsolutePath.Substring(1));
-                if (responseObject.Content == null)
+                try
+                {
+                    //Gets file content
+                    responseObject = FileFinder.GetFile(request.Url.AbsolutePath.Substring(1));
+                    if (responseObject.Content == null)
+                    {
+                        responseObject.Content = GenerateErrorPage(HttpStatusCode.InternalServerError);
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    responseObject.Content = GenerateErrorPage(HttpStatusCode.NotFound);
+                }
+                catch (Exception)
                 {
                     responseObject.Content = GenerateErrorPage(HttpStatusCode.InternalServerError);
                 }
             }
-            catch (FileNotFoundException)
-            {
-                responseObject.Content = GenerateErrorPage(HttpStatusCode.NotFound);
-            }
-            catch (Exception)
-            {
-                responseObject.Content = GenerateErrorPage(HttpStatusCode.InternalServerError);
-            }
-            finally {
-                byte[] buffer = new byte[responseObject.Content.Length];
-                int nbytes;
-                response.ContentType = responseObject.ContentType;
-                response.ContentLength64 = buffer.Length;
-                while ((nbytes = responseObject.Content.Read(buffer, 0, buffer.Length)) > 0)
-                    response.OutputStream.Write(buffer, 0, nbytes);
-                responseObject.Content.Close();
-                response.StatusCode = (int)HttpStatusCode.OK;
-                response.OutputStream.Flush();
-                response.OutputStream.Close();
-            }
+            byte[] buffer = new byte[responseObject.Content.Length];
+            int nbytes;
+            response.ContentType = responseObject.ContentType;
+            response.ContentLength64 = buffer.Length;
+            while ((nbytes = responseObject.Content.Read(buffer, 0, buffer.Length)) > 0)
+                response.OutputStream.Write(buffer, 0, nbytes);
+            responseObject.Content.Close();
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.OutputStream.Flush();
+            response.OutputStream.Close();
+            
         }
     }
 
