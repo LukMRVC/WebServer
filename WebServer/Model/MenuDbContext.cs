@@ -33,6 +33,10 @@ namespace WebServer.Model
 
             builder.Entity<User>().HasMany(u => u.Order).WithOne(o => o.User).IsRequired();
 
+            builder.Entity<Category>().HasIndex(c => c.Name).IsUnique(true);
+
+            builder.Entity<Food>().HasIndex(f => f.Name).IsUnique(true);
+
 
         }
 

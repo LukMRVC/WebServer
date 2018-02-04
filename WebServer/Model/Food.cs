@@ -15,6 +15,7 @@ namespace WebServer.Model
 
         public string Path { get; set; }
 
+        [StringLength(200)]
         public string Name { get; set; }
 
         public int Gram { get; set; }

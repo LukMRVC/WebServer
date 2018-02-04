@@ -14,6 +14,12 @@ namespace WebServer.Http
             ContentType = MimeMappings.TryGetValue(Path.GetExtension(filename), out string mime) ? mime : "application/octet-stream";
         }
 
+        public ResponseObject(string filename, Stream stream, string contentType)
+        {
+            Content = stream;
+            ContentType = contentType;
+        }
+
         public ResponseObject()
         {
             ContentType = "text/html";

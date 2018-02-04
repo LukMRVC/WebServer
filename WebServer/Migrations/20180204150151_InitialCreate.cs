@@ -28,8 +28,7 @@ namespace WebServer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
                     Name = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: false),
-                    Path = table.Column<string>(nullable: true)
+                    ParentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

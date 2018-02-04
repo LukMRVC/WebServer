@@ -10,14 +10,24 @@ namespace WebServer.Model
     public class Category
     {
 
+        public Category()
+        {
+            ParentId = null;
+        }
+
+        public Category(string name, int? parentId)
+        {
+            Name = name;
+            ParentId = parentId;
+        }
+
         [Key]
         public int Id { get; set; }
 
-        public string Path { get; set; }
-
+        [StringLength(100)]
         public string Name { get; set; }
 
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
 
         public Food Food { get; set; }
 
