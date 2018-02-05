@@ -28,7 +28,7 @@ bld/
 #wwwroot/
 
 # Bootstrap treeview 
-[Ww]ebServer/www/js/bootstrap-treeview-master/
+www/js/bootstrap-treeview-master/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
