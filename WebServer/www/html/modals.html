@@ -25,3 +25,134 @@
     </div>
 </div>
 {{ section end }}
+
+{{ section start 'addFoodModal' }}
+<!-- Food Modal -->
+<div class="modal fade" id="addFoodModal" tabindex="-1" role="dialog" aria-labelledby="addFoodModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Přidat jídlo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+            <form id="required-info">
+                <div class="form-group">
+                        <input type="text" placeholder="Název" class="form-control" id="food-name">
+                  </div>
+                  <div class="form-group">
+                      <input type="text" placeholder="Gramáž" class="form-control" id="food-weight">
+                  </div>
+                <div class="form-group">
+                        <input type="text" placeholder="Cena" class="form-control" id="food-price">
+                  </div>
+                  <div class="form-group">
+                      <input type="text" placeholder="Složení" class="form-control" id="food-composition">
+                </div>
+            </form>
+
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#more-info" aria-expanded="false" aria-controls="more-info" style="margin-bottom: 10px;">
+                  Výživové hodnoty (na 100g)
+              </button>
+
+          <div class="collapse" id="more-info">
+            <form id="nutrition-info">
+                <div class="form-group">
+                    <input type="text" placeholder="Energetická hodnota (Kj)" class="form-control" id="food-energyKj">
+              </div>
+              <div class="form-group">
+                  <input type="text" placeholder="Energetická hodnota (Kcal)" class="form-control" id="food-energyKcal">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Bílkoviny (g)" class="form-control" id="food-protein">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Sacharidy (g)" class="form-control" id="food-carbs">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Z toho cukry (g)" class="form-control" id="food-sugar">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Tuky (g)" class="form-control" id="food-fat">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Nasycené mastné kyseliny (g)" class="form-control" id="food-saturated-fat">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Vláknina (g)" class="form-control" id="food-fiber">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Sůl (g)" class="form-control" id="food-salt">
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="gluten" value="gluten">
+                    <label class="form-check-label" for="gluten">Obiloviny s lepkem (1)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="crustaceans" value="crustaceans">
+                    <label class="form-check-label" for="crustaceans">Korýši (2)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="eggs" value="eggs">
+                    <label class="form-check-label" for="eggs">Vajíčka (3)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="fish" value="fish">
+                    <label class="form-check-label" for="fish">Ryby (4)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="peanut" value="peanut">
+                    <label class="form-check-label" for="peanut">Podzemnice olejná (5)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="soy" value="soy">
+                    <label class="form-check-label" for="soy">Sója (6)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="milk" value="milk">
+                    <label class="form-check-label" for="milk">Mléko a výrobky z něj (7)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="nuts" value="nuts">
+                    <label class="form-check-label" for="nuts">Skořápkové plody (8)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="celery" value="celery">
+                    <label class="form-check-label" for="celery">Celer (9)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="mustard" value="mustard">
+                    <label class="form-check-label" for="mustard">Hořčice (10)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="sesame" value="sesame">
+                    <label class="form-check-label" for="sesame">Sezamová semena (11)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="sulfur-dioxide" value="sulfur-dioxide">
+                    <label class="form-check-label" for="sulfur-dioxide">Oxid siřičitý (12)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="wolf-bean" value="wolf-bean">
+                    <label class="form-check-label" for="wolf-bean">Vlčí bob (13)</label>
+                </div>
+                <div class="form-check form-check-inline allergen-wrap">
+                    <input class="form-check-input" type="checkbox" id="mollusc" value="mollusc">
+                    <label class="form-check-label" for="mollusc">Měkkýši (14)</label>
+                </div>
+            </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{ section end }}
