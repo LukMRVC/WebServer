@@ -13,8 +13,6 @@ namespace WebServer.Model
         [Key]
         public int Id { get; set; }
 
-        public string Path { get; set; }
-
         [StringLength(200)]
         public string Name { get; set; }
 
