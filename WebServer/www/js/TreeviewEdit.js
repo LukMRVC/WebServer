@@ -1,23 +1,4 @@
 ﻿
-$("#save-category").click((e) => {
-    e.preventDefault();
-    let modal = $("#categoryModal");
-    let value = modal.find('.modal-body input').val();
-    let body = {
-        name: value
-    };
-    if (value) {
-        $.ajax({
-            url: "/api/category/add",
-            data: JSON.stringify(body),
-            error: (e) => { console.log(e); },
-            type: "POST",
-            success: AddNodeToTreeview(value)
-        });
-    }
-    modal.modal('hide');
-});
-
 function AddNodeToTreeview(name) {
     console.log("Before push: ", myData);
     myData.push({

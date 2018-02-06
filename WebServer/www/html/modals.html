@@ -42,15 +42,27 @@
             <form id="required-info">
                 <div class="form-group">
                         <input type="text" placeholder="Název" class="form-control" id="food-name">
+                        <div class="invalid-feedback">
+                            Toto je povinný údaj.
+                          </div>
                   </div>
                   <div class="form-group">
                       <input type="text" placeholder="Gramáž" class="form-control" id="food-weight">
+                      <div class="invalid-feedback">
+                        Toto je povinný údaj a jsou povoleny jen číselné hodnoty.
+                      </div>
                   </div>
                 <div class="form-group">
                         <input type="text" placeholder="Cena" class="form-control" id="food-price">
+                        <div class="invalid-feedback">
+                            Toto je povinný údaj a jsou povoleny jen číselné hodnoty.
+                          </div>
                   </div>
                   <div class="form-group">
                       <input type="text" placeholder="Složení" class="form-control" id="food-composition">
+                      <div class="invalid-feedback">
+                        Toto je povinný údaj.
+                      </div>
                 </div>
             </form>
 
@@ -62,30 +74,57 @@
             <form id="nutrition-info">
                 <div class="form-group">
                     <input type="text" placeholder="Energetická hodnota (Kj)" class="form-control" id="food-energyKj">
+                    <div class="invalid-feedback">
+                        Povoleny jsou jen číselné hodnoty.
+                    </div>
               </div>
               <div class="form-group">
                   <input type="text" placeholder="Energetická hodnota (Kcal)" class="form-control" id="food-energyKcal">
+                  <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Bílkoviny (g)" class="form-control" id="food-protein">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Sacharidy (g)" class="form-control" id="food-carbs">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Z toho cukry (g)" class="form-control" id="food-sugar">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Tuky (g)" class="form-control" id="food-fat">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Nasycené mastné kyseliny (g)" class="form-control" id="food-saturated-fat">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Vláknina (g)" class="form-control" id="food-fiber">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <input type="text" placeholder="Sůl (g)" class="form-control" id="food-salt">
+                <div class="invalid-feedback">
+                    Povoleny jsou jen číselné hodnoty.
+                </div>
             </div>
             <div class="form-group">
                 <div class="form-check form-check-inline allergen-wrap">
@@ -149,8 +188,9 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít
+        </button>
+        <button type="button" class="btn btn-primary" id="save-food">Uložit</button>
       </div>
     </div>
   </div>
