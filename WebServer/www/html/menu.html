@@ -10,6 +10,8 @@
 
     {{ import 'html/modals.html' 'categoryModal' }}
 
+    {{ import 'html/modals.html' 'addFoodModal' }}
+
     {{ import 'html/index.html' 'navbar' }}
     <div class="container-fluid">
         <div class="row justify-content-md-center">
@@ -17,7 +19,7 @@
                 <button type="button" id="add-category" data-toggle="modal" data-target="#categoryModal" class="btn btn-primary">Přidat kategorii</button>
             </div>
             <div class="col-md-1">
-                <button type="button" id="add-food" class="btn btn-info">Přidat jídlo</button>
+                <button type="button" id="add-food" data-toggle="modal" data-target="#addFoodModal" class="btn btn-info">Přidat jídlo</button>
             </div>
             <div class="col-md-1">
                 <button type="button" id="remove" class="btn btn-danger">Smazat</button>
@@ -88,7 +90,7 @@
         $('#tree').treeview('checkAll', { silent: true });
 
 
-        
+
     </script>
     <script src="../js/TreeviewEdit.js"></script>
 
