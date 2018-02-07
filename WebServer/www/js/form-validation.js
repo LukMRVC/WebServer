@@ -19,11 +19,13 @@ $("#save-category").click((e) => {
 });
 
 $("#save-food").click((e) => {
+    
     e.preventDefault();
     let modal = $("#addFoodModal");
     let values = [];
     let food = {};
     let propName;
+    let allergens = [];
     $("#required-info").find('input').each((index, ele) => {
         if (!$(ele).val()) {
             $(ele).addClass('is-invalid');
@@ -48,13 +50,42 @@ $("#save-food").click((e) => {
     if (values.length != 4) {
         return;
     }
-    console.log(food);
+
+    let invalid = false;
     $("#nutrition-info").find('input').each((index, ele) => {
-        if ($(ele).val() && !isNaN($(ele).val())) {
+        if ($(ele).val() && !$(ele).is(":checkbox")) {
+            if (isNaN($(ele).val()) ) {
+                $(ele).addClass('is-invalid');
+                invalid = true;
+                return;
+            }
             propName = $(ele).attr('id').charAt(5).toUpperCase() + $(ele).attr('id').substring(6);
             food[propName] = $(ele).val();
             values.push($(ele).val());
+            if ($(ele).hasClass('is-invalid')) {
+                $(ele).removeClass('is-invalid');
+            }
+            $(ele).addClass('is-valid');
+
+        } else if ($(ele).is(":checked")) {
+            allergens.push($(ele).val().substring(9));
         }
     });
-    console.log(values);
+    if (invalid)
+        return;
+    food['Allergens'] = allergens;
+    console.log(food);
+
+    $.ajax({
+        url: "/api/food/add",
+        type: "POST",
+        data: food,
+
+    })
 });
+
+
+function validate(ev) {
+    let node = $("#tree").find(".node-selected");
+    console.log(node);
+}

@@ -13,10 +13,13 @@
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="col-md-1">
-                <button type="button" id="add-category" data-toggle="modal" data-target="#categoryModal" class="btn btn-primary">Přidat kategorii</button>
+                <button type="button" id="add-category" data-toggle="modal" data-target="#categoryModal"  class="btn btn-primary">Přidat kategorii</button>
             </div>
             <div class="col-md-1">
-                <button type="button" id="add-food" data-toggle="modal" data-target="#addFoodModal" class="btn btn-info">Přidat jídlo</button>
+                <!--
+                    I have initiate with javascript, since I have to check for selected node
+                    data-toggle="modal" data-target="#addFoodModal" -->
+                <button type="button" id="add-food" class="btn btn-info">Přidat jídlo</button>
             </div>
             <div class="col-md-1">
                 <button type="button" id="remove" class="btn btn-danger">Smazat</button>
@@ -75,15 +78,15 @@
         $("#tree").treeview({
             levels: 2,
             data: myData,
-            expandIcon: 'fa fa-plus',
-            collapseIcon: 'fa fa-minus',
+            expandIcon: 'fa fa-angle-right',
+            collapseIcon: 'fa fa-angle-down',
             emptyIcon: 'fa',
             showIcon: true
 
         });
 
         $('#tree').treeview('checkAll', { silent: true });
-
+        $("#add-food").click(() => { $("#addFoodModal").modal();  })
 
 
     </script>
