@@ -85,7 +85,9 @@ $("#save-food").click((e) => {
 });
 
 
-function validate(ev) {
+function validate() {
     let node = $("#tree").find(".node-selected");
+    if (node.length == 0);
+    return false;
     console.log(node);
 }
