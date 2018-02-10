@@ -54,6 +54,7 @@
         $.getJSON("http://localhost:1234/api/getMenuData", (result) => {
             $("#loader").fadeOut(500);
             initializeTree(result);
+            populateCategories();
         });
 
         var myData = [];

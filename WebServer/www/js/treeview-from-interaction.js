@@ -5,26 +5,33 @@ $("#add-category").click(() => {
     $("#categoryModal").modal();
 });
 
-
-$("#categoryModal").on('show.bs.modal', function (ev) {
+function populateCategories() {
+    let modal = $("#categoryModal");
+    let $select = modal.find("#categorySelect");
+    $select.find('option').remove();
     let options = [];
-    $("#tree").find("li").each((index, ele) => {
+    let nullOption = {
+        value: "null",
+        name: "Vybrat..."
+    }
+    options.push(nullOption);
+    //nenajde 3 vnořené listy, kdo ví proč
+    $("#tree .list-group").find("[data-nodeid]").each((index, ele) => {
         let option = {};
-        if ($(ele).has(".category")) {
+        debugger
+        //if ($(ele).has(".category")) {
+        if ($(ele).find(".category")) {
             option.value = $(ele).attr('data-nodeid');
-            option.name = $(ele).children(".category").html();
+            option.name = $(ele).find(".category").html();
             options.push(option);
         }
 
     });
-    console.log(options);
-    let modal = $(this);
-    let $select = modal.find("#categorySelect");
-    console.log($select);
+    
     for (let i = 0; i < options.length; ++i) {
         $select.append($('<option>', {
             value: options[i].value,
-            text: options[i].name
+            text: options[i].name,
         }));
     }
-});
+}

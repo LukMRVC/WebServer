@@ -9,7 +9,7 @@ namespace WebServer.Http
     {
 
 
-        public static HttpListenerResponse response;
+        // static HttpListenerResponse HttpResponse;
         public static Model.Managers.TopManager manager = new Model.Managers.TopManager();
 
 
@@ -47,7 +47,7 @@ namespace WebServer.Http
 
         public static void Route(HttpListenerRequest request, HttpListenerResponse HttpResponse)
         {
-            response = HttpResponse;
+            //Router.HttpResponse = HttpResponse;
             ResponseObject responseObject = new ResponseObject();
             if (request.Url.AbsolutePath.Contains("api"))
             {
@@ -84,15 +84,14 @@ namespace WebServer.Http
             }
             byte[] buffer = new byte[responseObject.Content.Length];
             int nbytes;
-            response.ContentType = responseObject.ContentType;
-            response.ContentLength64 = buffer.Length;
+            HttpResponse.ContentType = responseObject.ContentType;
+            HttpResponse.ContentLength64 = buffer.Length;
             while ((nbytes = responseObject.Content.Read(buffer, 0, buffer.Length)) > 0)
-                response.OutputStream.Write(buffer, 0, nbytes);
+                HttpResponse.OutputStream.Write(buffer, 0, nbytes);
+            HttpResponse.StatusCode = (int)HttpStatusCode.OK;
+            HttpResponse.OutputStream.Flush();
+            HttpResponse.OutputStream.Close();
             responseObject.Content.Close();
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.OutputStream.Flush();
-            response.OutputStream.Close();
-            
         }
     }
 

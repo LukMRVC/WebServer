@@ -2,9 +2,23 @@
 $("#save-category").click((e) => {
     e.preventDefault();
     let modal = $("#categoryModal");
+    let parent = modal.find("#categorySelect").val();
     let value = modal.find('.modal-body input').val();
+    let parentName = modal.find(":selected").text();
+    if (value) {
+        if (modal.find('.modal-body input').hasClass('is-invalid')) {
+            modal.find('.modal-body input').removeClass('is-invalid');
+        }
+    } else {
+        modal.find('.modal-body input').addClass('is-invalid');
+        return;
+    }
+    modal.find('.modal-body input').addClass('is-valid');
+    if (parent === "null")
+        parent = null;
     let body = {
-        name: value
+        Name: value,
+        ParentId: parent
     };
     if (value) {
         $.ajax({
@@ -12,14 +26,16 @@ $("#save-category").click((e) => {
             data: JSON.stringify(body),
             error: (e) => { console.log(e); },
             type: "POST",
-            success: AddNodeToTreeview(value)
+            success: AddNodeToTreeview(body, parentName)
         });
     }
+    
     modal.modal('hide');
 });
 
+
+
 $("#save-food").click((e) => {
-    
     e.preventDefault();
     let modal = $("#addFoodModal");
     let values = [];
