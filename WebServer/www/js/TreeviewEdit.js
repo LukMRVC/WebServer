@@ -3,19 +3,26 @@ function initializeTree(object) {
     let i = 0;
     console.log()
     for (i = 0; i < object.Categories.length; ++i) {
-
         if (object.Categories[i].ParentId == null) {
             AddNodeToTreeview(object.Categories[i])
+        } else {
+            for (let j = 0; j < object.Categories.length; ++j) {
+                if (object.Categories[i].ParentId == object.Categories[j].Id) {
+                    AddNodeToTreeview(object.Categories[i], object.Categories[j].Name);
+                    break;
+                }
+            }
         }
     }
     $("#tree").treeview({
-        levels: 2,
+        levels: 5,
         data: myData,
         expandIcon: 'fa fa-angle-right',
         collapseIcon: 'fa fa-angle-down',
         emptyIcon: 'fa',
         showIcon: true
     });
+    $('#tree').treeview('expandAll', { silent: true });
 }
 
 

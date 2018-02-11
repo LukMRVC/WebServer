@@ -8,17 +8,18 @@ $("#add-category").click(() => {
 function populateCategories() {
     let modal = $("#categoryModal");
     let $select = modal.find("#categorySelect");
+    let $addFoodSelect = $("#addFoodModal").find("#catSelect");
     $select.find('option').remove();
+    $addFoodSelect.find('option').remove();
     let options = [];
     let nullOption = {
         value: "null",
         name: "Vybrat..."
     }
     options.push(nullOption);
-    //nenajde 3 vnořené listy, kdo ví proč
+    //Opraveno
     $("#tree .list-group").find("[data-nodeid]").each((index, ele) => {
         let option = {};
-        debugger
         //if ($(ele).has(".category")) {
         if ($(ele).find(".category")) {
             option.value = $(ele).attr('data-nodeid');
@@ -30,6 +31,10 @@ function populateCategories() {
     
     for (let i = 0; i < options.length; ++i) {
         $select.append($('<option>', {
+            value: options[i].value,
+            text: options[i].name,
+        }));
+        $addFoodSelect.append($('<option>', {
             value: options[i].value,
             text: options[i].name,
         }));

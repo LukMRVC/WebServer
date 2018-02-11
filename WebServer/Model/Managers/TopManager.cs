@@ -39,7 +39,7 @@ namespace WebServer.Model.Managers
 
             object ret = methodToInvoke.Invoke(this, parameters);
 
-            return new ResponseObject(methodName, Router.GenerateStreamFromString(JsonConvert.SerializeObject(ret)), "text/plain");
+            return new ResponseObject(methodName, Router.GenerateStreamFromString(JsonConvert.SerializeObject(ret)), "application/json");
 
         }
 
@@ -73,14 +73,17 @@ namespace WebServer.Model.Managers
         }
 
         [RestRoute("/category/add", "POST")]
-        public string AddCategory(string jsonObject)
+        public Category AddCategory(string jsonObject)
         {
-            string hs = "";
-           // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
-            CategoryManager.AddCategory(jsonObject);
-            return "success";
+            // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
+            return CategoryManager.AddCategory(jsonObject);
         }
 
+        [RestRoute("/food/add", "POST")]
+        public void AddFood(string jsonObject)
+        {
+            FoodManager.AddFood(jsonObject);
+        }
 
     }
 }

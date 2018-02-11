@@ -18,7 +18,8 @@ $("#save-category").click((e) => {
         parent = null;
     let body = {
         Name: value,
-        ParentId: parent
+        ParentId : parent,
+        ParentName: parentName
     };
     if (value) {
         $.ajax({
@@ -26,7 +27,10 @@ $("#save-category").click((e) => {
             data: JSON.stringify(body),
             error: (e) => { console.log(e); },
             type: "POST",
-            success: AddNodeToTreeview(body, parentName)
+            success: (result) => {
+                CategoryReferences.push(result);
+                AddNodeToTreeview(body, parentName)
+            }
         });
     }
     
@@ -42,6 +46,22 @@ $("#save-food").click((e) => {
     let food = {};
     let propName;
     let allergens = [];
+    if ($("#catSelect").val() == "null") {
+        $("#catSelect").addClass('is-invalid');
+        return;
+    } else if ($("#catSelect").hasClass('is-invalid')) {
+        $("#catSelect").removeClass('is-invalid');
+        $("#catSelect").addClass('is-valid');
+    }
+    let catName = modal.find(":selected").text();
+    //Find category DB id
+    for (let i = 0; i < CategoryReferences.length; ++i) {
+        if (CategoryReferences[i].Name == catName) {
+            food['CategoryId'] = CategoryReferences[i].Id;
+            break;
+        }
+    }
+
     $("#required-info").find('input').each((index, ele) => {
         if (!$(ele).val()) {
             $(ele).addClass('is-invalid');
@@ -95,7 +115,7 @@ $("#save-food").click((e) => {
     $.ajax({
         url: "/api/food/add",
         type: "POST",
-        data: food,
+        data: JSON.stringify(food),
 
     })
 });

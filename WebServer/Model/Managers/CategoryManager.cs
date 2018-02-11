@@ -8,14 +8,27 @@ namespace WebServer.Model.Managers
     class CategoryManager
     {
 
-        public static void AddCategory(string postText)
+        public static Category AddCategory(string postText)
         {
-            var category = JsonConvert.DeserializeObject<Category>(postText);
+            var categoryText = JsonConvert.DeserializeObject<Dictionary<string, string>>(postText);
+            Category newCategory;
+            //var category = JsonConvert.DeserializeObject<Category>(postText);
             using (var ctx = new MenuDbContext())
             {
-                ctx.Category.Add(category);
+                
+                if (categoryText["ParentName"].Equals("Vybrat...", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    newCategory = new Category(categoryText["Name"], null);
+                }
+                else
+                {
+                    var parent = (from c in ctx.Category.ToList() where c.Name == categoryText["ParentName"] select c).First();
+                    newCategory = new Category(categoryText["Name"], parent.Id);
+                }
+                ctx.Category.Add(newCategory);
                 ctx.SaveChanges();
             }
+            return newCategory;
         }
 
 
@@ -24,7 +37,7 @@ namespace WebServer.Model.Managers
             IEnumerable < Category > list;
             using (var ctx = new MenuDbContext())
             {
-                list = ctx.Category.ToList();
+                list = ctx.Category.ToList().OrderBy(c => c.ParentId);
             }
             return list;
         }
