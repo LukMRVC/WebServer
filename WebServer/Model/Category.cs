@@ -24,12 +24,12 @@ namespace WebServer.Model
         [Key]
         public int Id { get; set; }
 
-        [StringLength(100)]
+        [Column(TypeName = "varchar(200)")]
         public string Name { get; set; }
 
         public int? ParentId { get; set; }
 
-        public Food Food { get; set; }
+        public ICollection<Food> Food { get; set; }
 
 
     }

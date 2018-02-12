@@ -24,6 +24,8 @@ function populateCategories() {
         if ($(ele).find(".category")) {
             option.value = $(ele).attr('data-nodeid');
             option.name = $(ele).find(".category").html();
+            if (!option.name)
+                return;
             options.push(option);
         }
 
@@ -39,4 +41,15 @@ function populateCategories() {
             text: options[i].name,
         }));
     }
+}
+
+function update(event, foodId) {
+    //Dát do modalu hidden ID na úpravu, samozřejmě najít food z referencí, aby se mohli do modalu hodit data
+    event.preventDefault();
+    console.log();
+
+    let element = $(event.target).prev();
+    console.log(element.data());
+
+
 }

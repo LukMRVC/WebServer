@@ -39,15 +39,14 @@ namespace WebServer.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100);
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int?>("ParentId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasAnnotation("MaxLength", 200);
+                        .IsUnique();
 
                     b.ToTable("Category");
 
@@ -76,9 +75,7 @@ namespace WebServer.Migrations
                     b.Property<int>("Gram");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Path");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<decimal>("Price");
 
@@ -99,12 +96,10 @@ namespace WebServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasAnnotation("MaxLength", 200);
+                        .IsUnique();
 
                     b.ToTable("food");
 
@@ -181,8 +176,8 @@ namespace WebServer.Migrations
             modelBuilder.Entity("WebServer.Model.Food", b =>
                 {
                     b.HasOne("WebServer.Model.Category", "Category")
-                        .WithOne("Food")
-                        .HasForeignKey("WebServer.Model.Food", "CategoryId")
+                        .WithMany("Food")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

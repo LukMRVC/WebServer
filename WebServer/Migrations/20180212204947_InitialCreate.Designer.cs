@@ -10,7 +10,7 @@ using WebServer.Model;
 namespace WebServer.Migrations
 {
     [DbContext(typeof(MenuDbContext))]
-    [Migration("20180204150151_InitialCreate")]
+    [Migration("20180212204947_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,8 @@ namespace WebServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int?>("ParentId");
 
@@ -71,9 +72,8 @@ namespace WebServer.Migrations
 
                     b.Property<int>("Gram");
 
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Path");
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(200)");
 
                     b.Property<decimal>("Price");
 
@@ -94,8 +94,7 @@ namespace WebServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("food");
 
@@ -172,8 +171,8 @@ namespace WebServer.Migrations
             modelBuilder.Entity("WebServer.Model.Food", b =>
                 {
                     b.HasOne("WebServer.Model.Category", "Category")
-                        .WithOne("Food")
-                        .HasForeignKey("WebServer.Model.Food", "CategoryId")
+                        .WithMany("Food")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

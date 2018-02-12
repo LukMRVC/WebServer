@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WebServer.Migrations
 {
-    public partial class CategoryChange : Migration
+    public partial class AddedUniqueIndices : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -14,6 +14,17 @@ function initializeTree(object) {
             }
         }
     }
+
+    for (i = 0; i < object.Food.length; ++i) {
+        for (let j = 0; i < object.Categories.length; ++j) {
+            if (object.Food[i].CategoryId == object.Categories[j].Id) {
+                AddFoodToTreeview(object.Food[i], object.Categories[j].Name);
+                break;
+            }
+        }
+    }
+
+
     $("#tree").treeview({
         levels: 5,
         data: myData,
@@ -49,16 +60,23 @@ function AddNodeToTreeview(category, parentName) {
     populateCategories();
 }
 
-function AddFoodToTreeview(values) {
-    let obj = {
-        text: "<span class='food'>"
-    };
-    for (let i = 0; i < values.length; ++i) {
-        obj.text += values[i]; 
-    }
-    obj.text += "</span>";
+function AddFoodToTreeview(food, parentName) {
+    let obj = "<span class='food' ";
 
-    myData.push(obj);
+  /*  for (let key in food) {
+        if (!food.hasOwnProperty(key)) continue;
+        obj += "data-" + key.toLowerCase() + "='" + food[key] + "' ";
+    }*/
+    obj += "><span class='food-divider'>" + food.Name + "</span><span class='food-divider'> " + food.Price + "Kč </span><span class='food-divider'>" + food.Gram + "g</span> </span> " +
+        " <button type='button' onclick='update(event, "+ food.Id + ")' class='btn btn-primary food-update'>Upravit <i class='fa fa-pencil-square-o'></i></button> ";
+    let objToAppend = FindParent(myData, parentName);
+    if (!objToAppend.hasOwnProperty('nodes'))
+        objToAppend.nodes = [];
+    objToAppend.nodes.push({
+        text: obj
+    });
+    RebuildTreeview();
+    populateCategories();
 }
 
 function RebuildTreeview() {

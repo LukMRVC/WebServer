@@ -69,6 +69,7 @@ namespace WebServer.Model.Managers
             TreeviewObject treeview = new TreeviewObject();
 
             treeview.Categories = CategoryManager.GetCategories();
+            treeview.Food = FoodManager.GetFood();
             return treeview;
         }
 
@@ -80,9 +81,9 @@ namespace WebServer.Model.Managers
         }
 
         [RestRoute("/food/add", "POST")]
-        public void AddFood(string jsonObject)
+        public Food AddFood(string jsonObject)
         {
-            FoodManager.AddFood(jsonObject);
+            return FoodManager.AddFood(jsonObject);
         }
 
     }

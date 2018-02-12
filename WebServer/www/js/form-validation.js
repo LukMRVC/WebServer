@@ -116,8 +116,14 @@ $("#save-food").click((e) => {
         url: "/api/food/add",
         type: "POST",
         data: JSON.stringify(food),
+        success: (result) => {
+            console.log("Result: ", result);
+            food.Id = result.Id;
+            modal.modal('hide');
+            AddFoodToTreeview(food, catName);
+        }
+    });
 
-    })
 });
 
 

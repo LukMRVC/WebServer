@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
 
 namespace WebServer.Model
 {
@@ -17,7 +17,7 @@ namespace WebServer.Model
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // optionsBuilder.UseMySQL(connectionString: System.Configuration.ConfigurationManager.ConnectionStrings["MenuDbContext"].ConnectionString);
-            optionsBuilder.UseMySQL("server=localhost;port=3306;database=webserverdb;uid=root;password=");
+            optionsBuilder.UseMySQL("server=localhost;port=3306;database=webserverdb;uid=root;password=;charset=utf8");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -33,11 +33,15 @@ namespace WebServer.Model
 
             builder.Entity<User>().HasMany(u => u.Order).WithOne(o => o.User).IsRequired();
 
+            builder.Entity<Food>().Property(f => f.Name).HasColumnType("varchar(200)");
+
+            builder.Entity<Category>().Property(c => c.Name).HasColumnType("varchar(200)");
+
+            builder.Entity<Category>().HasMany(c => c.Food).WithOne(f => f.Category);
+
             builder.Entity<Category>().HasIndex(c => c.Name).IsUnique(true);
 
             builder.Entity<Food>().HasIndex(f => f.Name).IsUnique(true);
-
-
         }
 
 

@@ -3,6 +3,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {{ import 'html/index.html' 'header' }}
+    <title>Menu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <link href="../css/bootstrap-treeview.min.css" rel="stylesheet" />
     <link href="../css/loader.css" rel="stylesheet" />
@@ -53,14 +54,17 @@
     <script type="text/javascript">
         var myData = [];
         var CategoryReferences; 
+        var FoodReferences;
         $.getJSON("http://localhost:1234/api/getMenuData", (result) => {
             $("#loader").fadeOut(500);
             CategoryReferences = result.Categories;
+            FoodReferences = result.Food;
             initializeTree(result);
             populateCategories();
             console.log(result);
         });
 
+        
 
         
 

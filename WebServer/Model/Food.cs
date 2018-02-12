@@ -13,7 +13,7 @@ namespace WebServer.Model
         [Key]
         public int Id { get; set; }
 
-        [StringLength(200)]
+        [Column(TypeName = "varchar(200)")]
         public string Name { get; set; }
 
         public int Gram { get; set; }
@@ -50,7 +50,6 @@ namespace WebServer.Model
         public ICollection<FoodAllergen> FoodAllergen { get; set; }
 
         public ICollection<OrderFood> OrderFood { get; set; }
-
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }

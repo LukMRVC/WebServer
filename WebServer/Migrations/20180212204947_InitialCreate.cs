@@ -27,7 +27,7 @@ namespace WebServer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(type: "varchar(200)", nullable: true),
                     ParentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -63,8 +63,7 @@ namespace WebServer.Migrations
                     EnergyKj = table.Column<int>(nullable: false),
                     Fiber = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
                     Gram = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Path = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(type: "varchar(200)", nullable: true),
                     Price = table.Column<decimal>(nullable: false),
                     Protein = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
                     Salt = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
@@ -156,8 +155,7 @@ namespace WebServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_food_CategoryId",
                 table: "food",
-                column: "CategoryId",
-                unique: true);
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_food_allergen_AllergenId",
