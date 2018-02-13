@@ -5,6 +5,18 @@ $("#add-category").click(() => {
     $("#categoryModal").modal();
 });
 
+$("#remove").click(() => {
+    let $selected = $("#tree").find('.node-selected');
+    if ($selected.length == 0) {
+        alert("No node was selected");
+        return;
+    } else {
+        if (confirm("Jste si jistý?")) {
+            Remove( $($selected[0]) );
+        }
+    }
+});
+
 function populateCategories() {
     let modal = $("#categoryModal");
     let $select = modal.find("#categorySelect");
@@ -79,6 +91,29 @@ function update(event, foodId) {
             break;
         }
     }
+}
 
+function Remove(object) {
+    console.log(object);
+    if (object.children().hasClass('category')) {
+        let id = object.children('.category').attr('data-id');
+        console.log("id: ", id);
+        $.ajax({
+            url: '/api/category/delete/' + id,
+            type: 'DELETE',
+            success: RemoveFromTreeview(object)
+        });
+    } else {
+        let id = object.children('.food').attr('data-id');
+        $.ajax({
+            url: '/api/food/delete/' + id,
+            type: 'DELETE',
+            success: RemoveFromTreeview(object)
+        });
+        console.log("food");
+    }
+}
 
+function FindReference() {
+    return 0;
 }

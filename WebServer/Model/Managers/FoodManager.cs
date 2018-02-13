@@ -32,5 +32,26 @@ namespace WebServer.Model.Managers
             return list;
         }
 
+        public static Food UpdateFood(string jsonObject)
+        {
+            var newFood = JsonConvert.DeserializeObject<Food>(jsonObject);
+            using(var ctx = new MenuDbContext())
+            {
+                ctx.Food.Update(newFood);
+                ctx.SaveChanges();
+            }
+
+            return newFood;
+        }
+
+        public static void DeleteFood(int id)
+        {
+            using(var ctx = new MenuDbContext())
+            {
+                var toRemove = ctx.Food.FirstOrDefault(f => f.Id == id);
+                ctx.Food.Remove(toRemove);
+                ctx.SaveChanges();
+            }
+        }
     }
 }

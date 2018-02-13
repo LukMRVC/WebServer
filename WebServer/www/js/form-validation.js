@@ -23,15 +23,31 @@ $("#save-category").click((e) => {
         ParentName: parentName
     };
     if (modal.find("#category-id").val() != "null") {
-        body.CategoryId = modal.find("#category-id").val();
+        body.Id = modal.find("#category-id").val();
+
+        if (value) {
+            $.ajax({
+                url: "/api/category/update",
+                data: JSON.stringify(body),
+                error: (e) => { console.log(e); },
+                type: "PUT",
+                success: (result) => {
+                    //Replace
+                    //CategoryReferences.push(result);
+                    UpdateNodeToTreeview(body, parentName)
+                }
+            });
+        }
+
     }
     if (value) {
         $.ajax({
             url: "/api/category/add",
             data: JSON.stringify(body),
             error: (e) => { console.log(e); },
-            type: (body.hasOwnProperty('CategoryId')) ? "PUT" : "POST",
+            type: "POST",
             success: (result) => {
+                body.Id = result.Id;
                 CategoryReferences.push(result);
                 AddNodeToTreeview(body, parentName)
             }
@@ -65,7 +81,6 @@ $("#save-food").click((e) => {
             break;
         }
     }
-    debugger
     $("#required-info").find('.form-control').each((index, ele) => {
         if (!$(ele).val()) {
             $(ele).addClass('is-invalid');
@@ -117,12 +132,26 @@ $("#save-food").click((e) => {
     console.log(food);
 
     if (modal.find("#food-id").val() != "null") {
-        food.foodId = modal.find("#food-id").val();
+        food.Id = modal.find("#food-id").val();
+        
+        $.ajax({
+            url: "/api/food/update",
+            type: "PUT",
+            data: JSON.stringify(food),
+            success: (result) => {
+                console.log("Result: ", result);
+                modal.modal('hide');
+                UpdateFoodToTreeview(food, catName);
+            }
+        });
+
+        return;
+
     }
-    debugger
+ 
     $.ajax({
         url: "/api/food/add",
-        type: (food.hasOwnProperty('foodId')) ? "PUT" : "POST",
+        type: "POST",
         data: JSON.stringify(food),
         success: (result) => {
             console.log("Result: ", result);

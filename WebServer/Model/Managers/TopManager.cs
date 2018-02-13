@@ -48,7 +48,12 @@ namespace WebServer.Model.Managers
         {
             //Removes the "/api" substring
             string methodName = url.AbsolutePath.Remove(0, 4);
-            string[] strParams = url.Segments.Skip(2).Select(s => s.Replace("/", "")).ToArray();
+            if(httpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            {
+                int indexToTrimEnd = methodName.LastIndexOf('/');
+                methodName = methodName.Remove(indexToTrimEnd, methodName.Length - indexToTrimEnd);
+            }
+            string[] strParams = url.Segments.Skip(4).Select(s => s.Replace("/", "")).ToArray();
 
             var methodToInvoke = this.GetType().GetMethods()
                 .Where(method => method.GetCustomAttributes(true)
@@ -76,8 +81,14 @@ namespace WebServer.Model.Managers
         [RestRoute("/category/add", "POST")]
         public Category AddCategory(string jsonObject)
         {
-            // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
             return CategoryManager.AddCategory(jsonObject);
+        }
+
+        [RestRoute("/category/delete", "DELETE")]
+        public void RemoveCategory(int id)
+        {
+            // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
+            CategoryManager.DeleteCategory(id);
         }
 
         [RestRoute("/food/add", "POST")]
@@ -85,6 +96,20 @@ namespace WebServer.Model.Managers
         {
             return FoodManager.AddFood(jsonObject);
         }
+
+        [RestRoute("/food/update", "PUT")]
+        public Food UpdateFood(string jsonObject)
+        {
+            return FoodManager.UpdateFood(jsonObject);
+        }
+
+        [RestRoute("/food/delete", "DELETE")]
+        public void RemoveFood(int id)
+        {
+            FoodManager.DeleteFood(id);
+        }
+
+
 
     }
 }

@@ -42,5 +42,15 @@ namespace WebServer.Model.Managers
             return list;
         }
 
+        public static void DeleteCategory(int id)
+        {
+            using(var ctx = new MenuDbContext())
+            {
+                var toRemove = ctx.Category.FirstOrDefault(c => c.Id == id);
+                ctx.Category.Remove(toRemove);
+                ctx.SaveChanges();
+            }
+        }
+
     }
 }
