@@ -2,6 +2,7 @@
 $("#save-category").click((e) => {
     e.preventDefault();
     let modal = $("#categoryModal");
+    
     let parent = modal.find("#categorySelect").val();
     let value = modal.find('.modal-body input').val();
     let parentName = modal.find(":selected").text();
@@ -21,12 +22,15 @@ $("#save-category").click((e) => {
         ParentId : parent,
         ParentName: parentName
     };
+    if (modal.find("#category-id").val() != "null") {
+        body.CategoryId = modal.find("#category-id").val();
+    }
     if (value) {
         $.ajax({
             url: "/api/category/add",
             data: JSON.stringify(body),
             error: (e) => { console.log(e); },
-            type: "POST",
+            type: (body.hasOwnProperty('CategoryId')) ? "PUT" : "POST",
             success: (result) => {
                 CategoryReferences.push(result);
                 AddNodeToTreeview(body, parentName)
@@ -61,8 +65,8 @@ $("#save-food").click((e) => {
             break;
         }
     }
-
-    $("#required-info").find('input').each((index, ele) => {
+    debugger
+    $("#required-info").find('.form-control').each((index, ele) => {
         if (!$(ele).val()) {
             $(ele).addClass('is-invalid');
         }
@@ -112,13 +116,18 @@ $("#save-food").click((e) => {
     food['Allergens'] = allergens;
     console.log(food);
 
+    if (modal.find("#food-id").val() != "null") {
+        food.foodId = modal.find("#food-id").val();
+    }
+    debugger
     $.ajax({
         url: "/api/food/add",
-        type: "POST",
+        type: (food.hasOwnProperty('foodId')) ? "PUT" : "POST",
         data: JSON.stringify(food),
         success: (result) => {
             console.log("Result: ", result);
             food.Id = result.Id;
+            FoodReferences.push(food);
             modal.modal('hide');
             AddFoodToTreeview(food, catName);
         }

@@ -22,6 +22,7 @@
                         <label for="category-name" class="col-form-label">Název kategorie:</label>
                         <input type="text" class="form-control" id="category-name">
                     </div>
+                    <input type="hidden" id="category-id" value="null"/>
                 </form>
             </div>
             <div class="modal-footer">
@@ -46,42 +47,42 @@
       </div>
       <div class="modal-body">
 
-            <form id="required-info">
-                <div class="form-group">
-                    <label class="mr-sm-2" for="inlineFormCustomSelect">Ke kategorii: </label>
-                    <select class="custom-select mr-sm-2" id="catSelect">
-                        <option selected value="null">Vybrat...</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Toto je povinný údaj.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                        <input type="text" placeholder="Název" class="form-control" id="food-name">
-                        <div class="invalid-feedback">
-                            Toto je povinný údaj.
-                          </div>
+          <form id="required-info">
+              <div class="form-group">
+                  <label class="mr-sm-2" for="inlineFormCustomSelect">Ke kategorii: </label>
+                  <select class="custom-select mr-sm-2" id="catSelect">
+                      <option selected value="null">Vybrat...</option>
+                  </select>
+                  <div class="invalid-feedback">
+                      Toto je povinný údaj.
                   </div>
-                  <div class="form-group">
-                      <input type="text" placeholder="Gramáž" class="form-control number-only" id="food-gram">
-                      <div class="invalid-feedback">
-                        Toto je povinný údaj a jsou povoleny jen číselné hodnoty.
-                      </div>
+              </div>
+              <div class="form-group">
+                  <input type="text" placeholder="Název" class="form-control" id="food-name">
+                  <div class="invalid-feedback">
+                      Toto je povinný údaj.
                   </div>
-                <div class="form-group">
-                        <input type="text" placeholder="Cena" class="form-control number-only" id="food-price">
-                        <div class="invalid-feedback">
-                            Toto je povinný údaj a jsou povoleny jen číselné hodnoty.
-                          </div>
+              </div>
+              <div class="form-group">
+                  <input type="text" placeholder="Gramáž" class="form-control number-only" id="food-gram">
+                  <div class="invalid-feedback">
+                      Toto je povinný údaj a jsou povoleny jen číselné hodnoty.
                   </div>
-                  <div class="form-group">
-                      <input type="text" placeholder="Složení" class="form-control" id="food-composition">
-                      <div class="invalid-feedback">
-                        Toto je povinný údaj.
-                      </div>
-                </div>
-            </form>
+              </div>
+              <div class="form-group">
+                  <input type="text" placeholder="Cena" class="form-control number-only" id="food-price">
+                  <div class="invalid-feedback">
+                      Toto je povinný údaj a jsou povoleny jen číselné hodnoty.
+                  </div>
+              </div>
+              <div class="form-group">
+                  <input type="text" placeholder="Složení" class="form-control" id="food-composition">
+                  <div class="invalid-feedback">
+                      Toto je povinný údaj.
+                  </div>
+              </div>
+              <input type="hidden" id="food-id" value="null" />
+          </form>
 
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#more-info" aria-expanded="false" aria-controls="more-info" style="margin-bottom: 10px;">
                   Výživové hodnoty (na 100g)
@@ -201,6 +202,7 @@
                     <label class="form-check-label" for="mollusc">Měkkýši (14)</label>
                 </div>
             </div>
+                
             </form>
           </div>
       </div>

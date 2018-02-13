@@ -46,10 +46,39 @@ function populateCategories() {
 function update(event, foodId) {
     //Dát do modalu hidden ID na úpravu, samozřejmě najít food z referencí, aby se mohli do modalu hodit data
     event.preventDefault();
-    console.log();
+    for (let i = 0; i < FoodReferences.length; ++i) {
+        if (FoodReferences[i].Id === foodId) {
+            let modal = $("#addFoodModal");
+            modal.find("#food-id").val(FoodReferences[i].Id);
+                //Ještě najít kategorii
 
-    let element = $(event.target).prev();
-    console.log(element.data());
+            for (let k = 0; k < CategoryReferences.length; ++k) {
+                if (CategoryReferences[k].Id === FoodReferences[i].CategoryId) {
+                    modal.find("#catSelect option").each((ind, e) => {
+                        if ($(e).text() == CategoryReferences[k].Name) {
+                            $(e).attr('selected', 'selected');
+                            return;
+                        }
+                    });
+                    break;
+                }
+            }
+            modal.find(".form-control").each((index, element) => {
+
+                for (let key in FoodReferences[i]) {
+                    if (!FoodReferences[i].hasOwnProperty(key)) continue;
+
+                    if (key.toLowerCase() == $(element).attr('id').substring(5).toLowerCase()) {
+                        $(element).val(FoodReferences[i][key]);
+                    }
+
+                }
+                console.log();
+            });
+            modal.modal("show");
+            break;
+        }
+    }
 
 
 }
