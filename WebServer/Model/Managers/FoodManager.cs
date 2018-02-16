@@ -15,6 +15,12 @@ namespace WebServer.Model.Managers
 
             using (var ctx = new MenuDbContext())
             {
+                food.FoodAllergen = new HashSet<FoodAllergen>();
+                foreach (int AllergenId in food.Allergenes)
+                {
+                    var allergen = (from a in ctx.Allergens.ToList() where a.Id == AllergenId select a).First();
+                    food.FoodAllergen.Add(new FoodAllergen(food, allergen));
+                }
                 ctx.Food.Add(food);
                 ctx.SaveChanges();
             }
@@ -32,11 +38,21 @@ namespace WebServer.Model.Managers
             return list;
         }
 
+        //Updating this doestn work... not sure how to fix the issue
         public static Food UpdateFood(string jsonObject)
         {
             var newFood = JsonConvert.DeserializeObject<Food>(jsonObject);
             using(var ctx = new MenuDbContext())
             {
+                //Solve detached M:N relations
+                // var old = ctx.Food.Where(f => f.Id == newFood.Id).First();
+                //newFood.FoodAllergen = ctx.Food.Where(f => f.Id == newFood.Id).First().FoodAllergen;
+                newFood.FoodAllergen = new HashSet<FoodAllergen>();
+                foreach(int AllergenId in newFood.Allergenes)
+                {
+                    var allergen = (from a in ctx.Allergens.ToList() where a.Id == AllergenId select a).First();
+                    newFood.FoodAllergen.Add(new FoodAllergen(newFood, allergen));
+                }
                 ctx.Food.Update(newFood);
                 ctx.SaveChanges();
             }

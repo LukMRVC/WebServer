@@ -87,6 +87,9 @@ function update(event, foodId) {
                 }
                 console.log();
             });
+
+            modal.data("update", FoodReferences[i].Name);
+
             modal.modal("show");
             break;
         }

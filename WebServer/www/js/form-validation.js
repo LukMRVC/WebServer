@@ -128,7 +128,7 @@ $("#save-food").click((e) => {
     });
     if (invalid)
         return;
-    food['Allergens'] = allergens;
+    food['Allergenes'] = allergens;
     console.log(food);
 
     if (modal.find("#food-id").val() != "null") {
@@ -141,7 +141,7 @@ $("#save-food").click((e) => {
             success: (result) => {
                 console.log("Result: ", result);
                 modal.modal('hide');
-                UpdateFoodToTreeview(food, catName);
+                UpdateFoodToTreeview(food, catName, modal.data("update"));
             }
         });
 

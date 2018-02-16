@@ -84,9 +84,9 @@ function AddFoodToTreeview(food, parentName) {
     populateCategories();
 }
 
-function UpdateFoodToTreeview(food, parentName) {
+function UpdateFoodToTreeview(food, parentName, previousName) {
     //Upon changing name, new node is appended to a tree, but it shouldn't, fix that
-    RemoveNode(myData, food.Name);
+    RemoveNode(myData, previousName);
     AddFoodToTreeview(food, parentName)
 }
 

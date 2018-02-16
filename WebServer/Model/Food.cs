@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using MySql.Data.EntityFrameworkCore.DataAnnotations;
 
 namespace WebServer.Model
@@ -47,9 +48,14 @@ namespace WebServer.Model
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Salt { get; set; }
 
+        [JsonIgnore]
         public ICollection<FoodAllergen> FoodAllergen { get; set; }
 
+        [JsonIgnore]
         public ICollection<OrderFood> OrderFood { get; set; }
+
+        [NotMapped]
+        public ICollection<int> Allergenes { get; set; }
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }

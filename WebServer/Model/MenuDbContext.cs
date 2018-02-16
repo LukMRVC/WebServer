@@ -9,10 +9,14 @@ namespace WebServer.Model
 
         public DbSet<Category> Category { get; set; }
 
+        public DbSet<Allergen> Allergens { get; set; }
+
         public DbSet<Order> Order { get; set; }
 
         public DbSet<User> User { get; set; }
 
+        public readonly string [] allergenValues = { "Obiloviny obsahující lepek", "Korýši", "Vejce", "Ryby", "Jádra podzemnice olejné", "Sójové boby (sója)",
+            "Mléko", "Skořápkové plody", "Celer", "Hořčice", "Sezamové semena", "Oxid siřičtý a siřičitany", "Vlčí bob", "Měkkýši"};
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
