@@ -85,8 +85,18 @@ function update(event, foodId) {
                     }
 
                 }
-                console.log();
             });
+
+            if (FoodReferences[i].Allergenes != null) {
+                modal.find('.form-check-input').each((index, element) => {
+
+                    for (let j = 0; j < FoodReferences[i].Allergenes.length; ++j) {
+                        if ($(element).val().substring(9) == FoodReferences[i].Allergenes[j]) {
+                            $(element).prop('checked', true);
+                        }
+                    }
+                });
+            }
 
             modal.data("update", FoodReferences[i].Name);
 

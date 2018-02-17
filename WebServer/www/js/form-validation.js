@@ -62,6 +62,7 @@ $("#save-category").click((e) => {
 $("#save-food").click((e) => {
     e.preventDefault();
     let modal = $("#addFoodModal");
+    let prevName = modal.data("update");
     let values = [];
     let food = {};
     let propName;
@@ -141,7 +142,7 @@ $("#save-food").click((e) => {
             success: (result) => {
                 console.log("Result: ", result);
                 modal.modal('hide');
-                UpdateFoodToTreeview(food, catName, modal.data("update"));
+                UpdateFoodToTreeview(food, catName, prevName);
             }
         });
 

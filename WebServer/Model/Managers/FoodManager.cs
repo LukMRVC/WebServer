@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -18,7 +19,7 @@ namespace WebServer.Model.Managers
                 food.FoodAllergen = new HashSet<FoodAllergen>();
                 foreach (int AllergenId in food.Allergenes)
                 {
-                    var allergen = (from a in ctx.Allergens.ToList() where a.Id == AllergenId select a).First();
+                    var allergen = ctx.Allergens.Single(a => a.Id == AllergenId);
                     food.FoodAllergen.Add(new FoodAllergen(food, allergen));
                 }
                 ctx.Food.Add(food);
@@ -33,7 +34,11 @@ namespace WebServer.Model.Managers
             IEnumerable<Food> list;
             using (var ctx = new MenuDbContext())
             {
-                list = ctx.Food.ToList().OrderBy(f => f.CategoryId);
+                list = ctx.Food.Include(f => f.FoodAllergen).ToList();
+                foreach(Food f in list)
+                {
+                    f.Allergenes = f.FoodAllergen.Select(fa => fa.AllergenId).ToArray();
+                }
             }
             return list;
         }
@@ -44,16 +49,15 @@ namespace WebServer.Model.Managers
             var newFood = JsonConvert.DeserializeObject<Food>(jsonObject);
             using(var ctx = new MenuDbContext())
             {
-                //Solve detached M:N relations
-                // var old = ctx.Food.Where(f => f.Id == newFood.Id).First();
-                //newFood.FoodAllergen = ctx.Food.Where(f => f.Id == newFood.Id).First().FoodAllergen;
+
+                DeleteFood(newFood.Id);
                 newFood.FoodAllergen = new HashSet<FoodAllergen>();
-                foreach(int AllergenId in newFood.Allergenes)
+                foreach (int AllergenId in newFood.Allergenes)
                 {
-                    var allergen = (from a in ctx.Allergens.ToList() where a.Id == AllergenId select a).First();
+                    var allergen = ctx.Allergens.Single(a => a.Id == AllergenId);
                     newFood.FoodAllergen.Add(new FoodAllergen(newFood, allergen));
                 }
-                ctx.Food.Update(newFood);
+                ctx.Food.Add(newFood);
                 ctx.SaveChanges();
             }
 

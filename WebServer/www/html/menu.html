@@ -64,7 +64,21 @@
             console.log(result);
         });
 
-        
+
+        $("#addFoodModal").on('hide.bs.modal', function (e) {
+            if ($(this).data('update')) {
+                $(this).removeData('update');
+                
+                $(this).find('input').each((i, ele) => {
+                    if ($(ele).is(':checkbox')) {
+                        $(ele).prop('checked', false);
+                    } else {
+                        $(ele).val('');
+                    }
+                });
+                $(this).find('#food-id').val("null");
+            }
+        });
 
         
 
