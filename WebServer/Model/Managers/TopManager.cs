@@ -16,7 +16,7 @@ namespace WebServer.Model.Managers
         {
 
         }
-      
+
 
         public ResponseObject InvokeMethod(Uri url, string httpMethod, Stream httpInputStream)
         {
@@ -49,7 +49,7 @@ namespace WebServer.Model.Managers
         {
             //Removes the "/api" substring
             string methodName = url.AbsolutePath.Remove(0, 4);
-            if(httpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            if (httpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
             {
                 int indexToTrimEnd = methodName.LastIndexOf('/');
                 methodName = methodName.Remove(indexToTrimEnd, methodName.Length - indexToTrimEnd);
@@ -68,6 +68,17 @@ namespace WebServer.Model.Managers
             return new ResponseObject(methodName, Router.GenerateStreamFromString(JsonConvert.SerializeObject(ret)), "application/json");
 
         }
+
+
+        //Key RSA key
+        [RestRoute("get_key", "GET")]
+        public string GetKey()
+        {
+
+        }
+
+
+
 
         [RestRoute("/getNewestOrders", "GET")]
         public Order GetOrder()
