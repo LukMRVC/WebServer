@@ -11,6 +11,14 @@ namespace WebServer.Model
     [Table("orders")]
     public class Order
     {
+        public Order()
+        {
+
+        }
+
+
+
+
         [Key]
         public int Id { get; set; }
 

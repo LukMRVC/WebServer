@@ -84,12 +84,15 @@ namespace WebServer.Http
             }
             byte[] buffer = new byte[responseObject.Content.Length];
             int nbytes;
+            
             HttpResponse.ContentType = responseObject.ContentType;
             HttpResponse.ContentLength64 = buffer.Length;
             while ((nbytes = responseObject.Content.Read(buffer, 0, buffer.Length)) > 0)
-                HttpResponse.OutputStream.Write(buffer, 0, nbytes);
+                 HttpResponse.OutputStream.Write(buffer, 0, nbytes);
+           // HttpResponse.OutputStream.Write(buffer, 0, buffer.Length);
             HttpResponse.StatusCode = (int)HttpStatusCode.OK;
             HttpResponse.OutputStream.Flush();
+
             HttpResponse.OutputStream.Close();
             responseObject.Content.Close();
         }

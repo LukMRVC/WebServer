@@ -11,7 +11,5 @@ namespace WebServer.Model
 
         public IEnumerable<Food> Food { get; set; }
 
-        public IEnumerable<Allergen> Allergens { get; set; }
-
     }
 }

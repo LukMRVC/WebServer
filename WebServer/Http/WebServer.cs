@@ -1,7 +1,9 @@
 ﻿using System;
+using WebServer.Model.Managers;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Net;
 
 namespace WebServer.Http
@@ -10,10 +12,56 @@ namespace WebServer.Http
     {
         private Router router;
         private static HttpListener listener;
+        private static HttpListener serverSentEvents;
+
+        public static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
 
         public WebServer() {
             router = new Router();
+            StartEvents();
             Start();
+        }
+
+        private void StartEvents()
+        {
+            serverSentEvents = new HttpListener();
+            serverSentEvents.Prefixes.Add("http://localhost:1234/SSE/");
+            serverSentEvents.Start();
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    var ctx = serverSentEvents.GetContext();
+                    Task.Run( async () =>
+                    {
+                        var response = ctx.Response;
+                        response.StatusCode = 200;
+                        response.ContentType = "text/event-stream";
+                        response.ContentEncoding = System.Text.Encoding.UTF8;
+                        try
+                        {
+                            while (true)
+                            {
+                                waitHandle.Reset();
+                                var msg = string.Format("data: Time is now {0}\n\n", DateTime.Now);
+                                var buffer = System.Text.Encoding.UTF8.GetBytes(msg);
+                                //response.ContentLength64 = buffer.Length;
+                                response.OutputStream.Write(buffer, 0, buffer.Length);
+                                response.OutputStream.Flush();
+                                waitHandle.WaitOne();
+                            }
+                        }
+                        catch (HttpListenerException ex)
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
+                       
+
+                    });
+                }
+
+
+            });
         }
 
         private static void Start() {
@@ -28,6 +76,7 @@ namespace WebServer.Http
             var context = listener.EndGetContext(result);
 
             listener.BeginGetContext(RequestCallback, listener);
+
 
             Router.Route(context.Request, context.Response);
 

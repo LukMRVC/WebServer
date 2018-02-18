@@ -16,6 +16,7 @@ namespace WebServer.Model.Managers
         {
 
         }
+      
 
         public ResponseObject InvokeMethod(Uri url, string httpMethod, Stream httpInputStream)
         {
@@ -68,6 +69,13 @@ namespace WebServer.Model.Managers
 
         }
 
+        [RestRoute("/getNewestOrders", "GET")]
+        public Order GetOrder()
+        {
+            return OrderManager.GetOrder();
+        }
+
+
         [RestRoute("/getMenuData", "GET")]
         public TreeviewObject GetMenuData()
         {
@@ -89,6 +97,13 @@ namespace WebServer.Model.Managers
         {
             // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
             CategoryManager.DeleteCategory(id);
+        }
+
+        [RestRoute("/order/add", "POST")]
+        public Order AddOrder(string json)
+        {
+            WebServer.Http.WebServer.waitHandle.Set();
+
         }
 
         [RestRoute("/food/add", "POST")]
