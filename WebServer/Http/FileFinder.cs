@@ -80,7 +80,7 @@ namespace WebServer.Http
             {
                 fs = File.Open(filename, FileMode.Open);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 if (fs != null)
                 {

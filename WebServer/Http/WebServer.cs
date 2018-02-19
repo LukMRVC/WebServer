@@ -32,7 +32,7 @@ namespace WebServer.Http
                 while (true)
                 {
                     var ctx = serverSentEvents.GetContext();
-                    Task.Run( async () =>
+                    Task.Run( () =>
                     {
                         var response = ctx.Response;
                         response.StatusCode = 200;
@@ -76,7 +76,6 @@ namespace WebServer.Http
             var context = listener.EndGetContext(result);
 
             listener.BeginGetContext(RequestCallback, listener);
-
 
             Router.Route(context.Request, context.Response);
 

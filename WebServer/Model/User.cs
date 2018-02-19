@@ -16,6 +16,14 @@ namespace WebServer.Model
             this.CreatedDateTime = DateTime.Now;
         }
 
+        public User(string Email, string Password)
+        {
+            this.CreatedDateTime = DateTime.Now;
+            this.Password = Password;
+            this.Email = Email;
+        }
+
+
         [Key]
         public int Id { get; set; }
 

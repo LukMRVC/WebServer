@@ -46,6 +46,9 @@ namespace WebServer.Model
             builder.Entity<Category>().HasIndex(c => c.Name).IsUnique(true);
 
             builder.Entity<Food>().HasIndex(f => f.Name).IsUnique(true);
+
+            builder.Entity<User>().HasIndex(u => u.Email).IsUnique(true);
+
         }
 
 

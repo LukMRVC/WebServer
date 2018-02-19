@@ -27,7 +27,14 @@ namespace WebServer
 
 
             //Webserver handles htmls, css and basically everything we see on the web
-            var server = new Http.WebServer();
+            try
+            {
+                var server = new Http.WebServer();
+
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             //
             Console.ReadLine();   
         }
