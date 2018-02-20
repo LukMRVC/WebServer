@@ -21,7 +21,7 @@ namespace WebServer.Model
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // optionsBuilder.UseMySQL(connectionString: System.Configuration.ConfigurationManager.ConnectionStrings["MenuDbContext"].ConnectionString);
-            optionsBuilder.UseMySQL("server=localhost;port=3306;database=webserverdb;uid=root;password=;charset=utf8");
+            optionsBuilder.UseMySQL("server=localhost;port=3306;database=webserverdb;uid=root;password=;charset=utf8;persistsecurityinfo=True");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

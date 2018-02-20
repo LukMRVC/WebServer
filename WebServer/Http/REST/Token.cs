@@ -60,13 +60,21 @@ namespace WebServer.Http.REST
         //Token bude vždy posílaný v HTTP hlavičce
         public static int? Verify(string token)
         {
-            string decrypted = Cryption.Decrypt(token.Substring(6));
-
-            if (Token.IsValid(token))
+            string sub = token.Substring(7);
+            sub = sub.Substring(0, sub.Length-1);
+            try
             {
-                return Int32.Parse(decrypted.Substring(12));
+                string decrypted = Cryption.Decrypt(sub);
+                if (Token.IsValid(decrypted))
+                {
+                    return Int32.Parse(decrypted.Substring(12));
+                }
+                return null;
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
 
 
         }

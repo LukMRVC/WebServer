@@ -15,12 +15,24 @@ namespace WebServer.Model.Managers
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             using (var ctx = new MenuDbContext())
             {
-                var user = ctx.User.Where(u => u.Email.Equals( Token.Decrypt(dict["email"]) )).First();
-                if ( user.ValidatePassword( Token.Decrypt(dict["password"]) ) )
+                try
                 {
-                    return user.Id;
+                    int? id = Token.Verify(dict["token"]);
+                    if (id.HasValue)
+                    {
+                        return id;
+                    }
+
+                    return null;
+                }catch(Exception e)
+                {
+                    var user = ctx.User.Where(u => u.Email.Equals(Token.Decrypt(dict["email"]))).First();
+                    if (user.ValidatePassword(Token.Decrypt(dict["password"])))
+                    {
+                        return user.Id;
+                    }
+                    return null;
                 }
-                return null;
                 
             }
         }

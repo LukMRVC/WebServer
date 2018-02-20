@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Linq;
@@ -29,6 +29,7 @@ namespace WebServer.Http
             {
                 ExportPublicKey(this.csp, sw, this.publicKey);
                 rem = sw.ToString();
+                rem = rem.Replace(Environment.NewLine, String.Empty);
             }
 
             return rem;

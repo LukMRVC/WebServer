@@ -18,6 +18,10 @@ namespace WebServer.Http
 
         private static Router reference;
 
+        private static HttpListenerRequest ListenerRequest;
+
+        public static int StatusCode = 400;
+
         public Router()
         {
             cryption = new RsaCryption();
@@ -59,6 +63,7 @@ namespace WebServer.Http
 
         public static void Route(HttpListenerRequest request, HttpListenerResponse HttpResponse)
         {
+            ListenerRequest = request;
             //Router.HttpResponse = HttpResponse;
             ResponseObject responseObject = new ResponseObject();
             if (request.Url.AbsolutePath.Contains("api"))
@@ -82,21 +87,25 @@ namespace WebServer.Http
                     responseObject = FileFinder.GetFile(request.Url.AbsolutePath.Substring(1));
                     if (responseObject.Content == null)
                     {
+                        StatusCode = 500;
                         responseObject.Content = GenerateErrorPage(HttpStatusCode.InternalServerError);
                     }
                 }
                 catch (FileNotFoundException)
                 {
                     responseObject.Content = GenerateErrorPage(HttpStatusCode.NotFound);
+                    StatusCode = 404;
                 }
                 catch (Exception)
                 {
+                    StatusCode = 500;
                     responseObject.Content = GenerateErrorPage(HttpStatusCode.InternalServerError);
                 }
             }
             byte[] buffer = new byte[responseObject.Content.Length];
             int nbytes;
-            
+
+            HttpResponse.StatusCode = StatusCode;
             HttpResponse.ContentType = responseObject.ContentType;
             HttpResponse.ContentLength64 = buffer.Length;
             while ((nbytes = responseObject.Content.Read(buffer, 0, buffer.Length)) > 0)
@@ -170,12 +179,14 @@ namespace WebServer.Http
         [RestRoute("/get_key", "GET")]
         public string GetKey()
         {
+            StatusCode = 200;
             return cryption.GetRemKey();
         }
 
         [RestRoute("/braintree_token", "GET")]
         public string BraintreeToken()
         {
+            StatusCode = 200;
             return BraintreeClient.gateway.ClientToken.Generate();
         }
 
@@ -185,15 +196,31 @@ namespace WebServer.Http
             int? id = UserManager.VerifyUser(json);
             if (id.HasValue)
             {
+                StatusCode = 200;
                 return Token.GenerateNew(id.Value);
             }
+            StatusCode = 403;
             return "Bad credentials!";
 
+        }
+
+        [RestRoute("/login", "GET")]
+        public string UserTokenLogin()
+        {
+            int? id = Token.Verify(ListenerRequest.Headers.Get("Authorization"));
+            if (id.HasValue)
+            {
+                StatusCode = 200;
+                return Token.GenerateNew(id.Value);
+            }
+            StatusCode = 403;
+            return "Invalid Token";
         }
 
         [RestRoute("/signup", "POST")]
         public User AddUser(string json)
         {
+            StatusCode = 201;
             return UserManager.AddUser(json);
         }
 
@@ -201,6 +228,7 @@ namespace WebServer.Http
         [RestRoute("/getNewestOrders", "GET")]
         public Order GetOrder()
         {
+            StatusCode = 200;
             return OrderManager.GetOrder();
         }
 
@@ -212,12 +240,14 @@ namespace WebServer.Http
 
             treeview.Categories = CategoryManager.GetCategories();
             treeview.Food = FoodManager.GetFood();
+            StatusCode = 200;
             return treeview;
         }
 
         [RestRoute("/category/add", "POST")]
         public Category AddCategory(string jsonObject)
         {
+            StatusCode = 201;
             return CategoryManager.AddCategory(jsonObject);
         }
 
@@ -226,6 +256,7 @@ namespace WebServer.Http
         {
             // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
             CategoryManager.DeleteCategory(id);
+            StatusCode = 204;
         }
 
         [RestRoute("/order/add", "POST")]
@@ -233,24 +264,28 @@ namespace WebServer.Http
         {
             var order = OrderManager.AddOrder(json);
             WebServer.waitHandle.Set();
+            StatusCode = 201;
             return order;
         }
 
         [RestRoute("/food/add", "POST")]
         public Food AddFood(string jsonObject)
         {
+            StatusCode = 201;
             return FoodManager.AddFood(jsonObject);
         }
 
         [RestRoute("/food/update", "PUT")]
         public Food UpdateFood(string jsonObject)
         {
+            StatusCode = 202;
             return FoodManager.UpdateFood(jsonObject);
         }
 
         [RestRoute("/food/delete", "DELETE")]
         public void RemoveFood(int id)
         {
+            StatusCode = 204;
             FoodManager.DeleteFood(id);
         }
 

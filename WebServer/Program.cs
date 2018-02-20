@@ -12,6 +12,7 @@ namespace WebServer
 
             using(var ctx = new MenuDbContext())
             {
+                ctx.Database.EnsureCreated();
                 var result = ctx.Allergens.FirstOrDefault();
 
                 if(result == null)
