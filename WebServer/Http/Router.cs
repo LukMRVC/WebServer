@@ -190,6 +190,19 @@ namespace WebServer.Http
             return BraintreeClient.gateway.ClientToken.Generate();
         }
 
+        [RestRoute("/get_user_history", "GET")]
+        public ICollection<Order> GetOrderHistory()
+        {
+            int? id = Token.Verify(ListenerRequest.Headers.Get("Authorization"));
+            if (id.HasValue)
+            {
+                StatusCode = 200;
+                return OrderManager.GetHistory(id.Value);
+            }
+            StatusCode = 404;
+            return new List<Order>();
+        }
+
         [RestRoute("/login", "POST")]
         public string UserLogin(string json)
         {
@@ -215,6 +228,61 @@ namespace WebServer.Http
             }
             StatusCode = 403;
             return "Invalid Token";
+        }
+
+        [RestRoute("/order", "POST")]
+        public Order AddOrder(string json)
+        {
+            Order order;
+            int? id = Token.Verify(ListenerRequest.Headers.Get("Authorization"));
+            if (id.HasValue)
+            {
+                WebServer.waitHandle.Set();
+                order = OrderManager.AddOrder(json, id.Value);
+                StatusCode = 201;
+                return order;
+            }
+            StatusCode = 403;
+            return null;
+        }
+
+        [RestRoute("/pay", "POST")]
+        public string Pay(string json)
+        {
+            int? id = Token.Verify(ListenerRequest.Headers.Get("Authorization"));
+            if (id.HasValue)
+            {
+                var payment = JsonConvert.DeserializeObject<BraintreeClient.PaymentRequest>(json);
+                var request = new Braintree.TransactionRequest
+                {
+                    Amount = payment.Amount,
+                    MerchantAccountId = "Sandbox_Project",
+                    PaymentMethodNonce = payment.Nonce,
+                    CustomerId = id.Value.ToString(),
+                    Options = new Braintree.TransactionOptionsRequest
+                    {
+                        SubmitForSettlement = true
+                    }
+                };
+
+                Braintree.Result<Braintree.Transaction> result = BraintreeClient.gateway.Transaction.Sale(request);
+                if (result.IsSuccess())
+                {
+                    StatusCode = 200;
+                    return "Successfully paid.";
+                }
+                else
+                {
+                    StatusCode = 400;
+                    return "Error while paying";
+                }
+
+            }
+            else {
+                StatusCode = 403;
+                return "Invalid token/user ID";
+            }
+            
         }
 
         [RestRoute("/signup", "POST")]
@@ -257,15 +325,6 @@ namespace WebServer.Http
             // var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonObject);
             CategoryManager.DeleteCategory(id);
             StatusCode = 204;
-        }
-
-        [RestRoute("/order/add", "POST")]
-        public Order AddOrder(string json)
-        {
-            var order = OrderManager.AddOrder(json);
-            WebServer.waitHandle.Set();
-            StatusCode = 201;
-            return order;
         }
 
         [RestRoute("/food/add", "POST")]
