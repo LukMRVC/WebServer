@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace WebServer.Model
 {
-    public class MenuDbContext : DbContext
+     public class MenuDbContext : DbContext
     {
+
         public DbSet<Food> Food { get; set; }
 
         public DbSet<Category> Category { get; set; }
@@ -18,10 +20,17 @@ namespace WebServer.Model
         public readonly string [] allergenValues = { "Obiloviny obsahující lepek", "Korýši", "Vejce", "Ryby", "Jádra podzemnice olejné", "Sójové boby (sója)",
             "Mléko", "Skořápkové plody", "Celer", "Hořčice", "Sezamové semena", "Oxid siřičtý a siřičitany", "Vlčí bob", "Měkkýši"};
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // optionsBuilder.UseMySQL(connectionString: System.Configuration.ConfigurationManager.ConnectionStrings["MenuDbContext"].ConnectionString);
-            optionsBuilder.UseMySQL("server=localhost;port=3306;database=webserverdb;uid=root;password=;charset=utf8;persistsecurityinfo=True");
+
+          protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+          {
+            if (string.IsNullOrEmpty(Program.ConnString))
+            {
+                optionsBuilder.UseMySQL(connectionString: System.Configuration.ConfigurationManager.ConnectionStrings["MenuDbContext"].ConnectionString);
+            }
+            else
+            {
+                optionsBuilder.UseMySQL(Program.ConnString);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
