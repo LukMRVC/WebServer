@@ -25,7 +25,7 @@ namespace WebServer
         public string User { get; set; }
 
         [PromptIfValueMissing(MaskInput = true)]
-        [NamedArgument('s', "secret",Const = "" ,Required = false, Constraint = NumArgsConstraint.Exactly,
+        [NamedArgument('s', "secret", Description = "Database account secret" ,Const = "" ,Required = false, Constraint = NumArgsConstraint.Exactly,
             NumArgs = 1, Action = ParseAction.Store)]
         public string Password { get; set; }
 

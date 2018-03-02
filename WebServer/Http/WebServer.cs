@@ -2,9 +2,12 @@
 using WebServer.Model.Managers;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Linq;
 using System.Threading;
 using System.Net;
+using WebServer.Model;
 
 namespace WebServer.Http
 {
@@ -43,8 +46,16 @@ namespace WebServer.Http
                             while (true)
                             {
                                 waitHandle.Reset();
+                                string order = "data: ";
+                                using (var dbCtx = new MenuDbContext())
+                                {
+                                    //dbCtx.Order.OrderByDescending(o => o.Id).Include( o => o.OrderFood).First()
+                                    order += JsonConvert.SerializeObject(dbCtx.Order.OrderByDescending(o => o.Id)
+                                        .Include(o => o.OrderFood).ThenInclude( of => of.Food ).First());
+                                }
+                                order += "\n\n";
                                 var msg = string.Format("data: Time is now {0}\n\n", DateTime.Now);
-                                var buffer = System.Text.Encoding.UTF8.GetBytes(msg);
+                                var buffer = System.Text.Encoding.UTF8.GetBytes(order);
                                 //response.ContentLength64 = buffer.Length;
                                 response.OutputStream.Write(buffer, 0, buffer.Length);
                                 response.OutputStream.Flush();
@@ -69,7 +80,6 @@ namespace WebServer.Http
             listener.Prefixes.Add("http://localhost:1234/");
             listener.Start();
             IAsyncResult result = listener.BeginGetContext(RequestCallback, listener);
-            Console.WriteLine("Listening...");
         }
 
         public static void RequestCallback(IAsyncResult result) {

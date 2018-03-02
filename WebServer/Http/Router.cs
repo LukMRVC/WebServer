@@ -237,8 +237,8 @@ namespace WebServer.Http
             int? id = Token.Verify(ListenerRequest.Headers.Get("Authorization"));
             if (id.HasValue)
             {
-                WebServer.waitHandle.Set();
                 order = OrderManager.AddOrder(json, id.Value);
+                WebServer.waitHandle.Set();
                 StatusCode = 201;
                 return order;
             }

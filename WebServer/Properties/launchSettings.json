@@ -2,7 +2,7 @@
   "profiles": {
     "WebServer": {
       "commandName": "Project",
-      "commandLineArgs": "-d novadatabaze -m localhost -u efcore -s"
+      "commandLineArgs": "-d webserverdb -m localhost -u golden -s password"
     }
   }
 }

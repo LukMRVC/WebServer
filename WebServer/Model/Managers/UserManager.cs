@@ -24,14 +24,22 @@ namespace WebServer.Model.Managers
                     }
 
                     return null;
-                }catch(Exception e)
+                }catch(Exception)
                 {
-                    var user = ctx.User.Where(u => u.Email.Equals(Token.Decrypt(dict["email"]))).First();
-                    if (user.ValidatePassword(Token.Decrypt(dict["password"])))
+                    try
                     {
-                        return user.Id;
+                        var user = ctx.User.Where(u => u.Email.Equals(Token.Decrypt(dict["email"]))).First();
+                        if (user.ValidatePassword(Token.Decrypt(dict["password"])))
+                        {
+                            return user.Id;
+                        }
+                        return null;
                     }
-                    return null;
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                    
                 }
                 
             }

@@ -15,9 +15,6 @@ namespace WebServer
             try
             {
                 opt = CliParser.Parse<Options>(args);
-                Console.WriteLine(opt.Host);
-                Console.WriteLine(opt.Database);
-                Console.WriteLine(opt.User);
                 ConnString = string.Format("server={0};port=3306;database={1};uid={2};password={3};charset=utf8;persistsecurityinfo=True", opt.Host, opt.Database, opt.User, opt.Password);
                 
             }
@@ -27,22 +24,32 @@ namespace WebServer
                 Console.ReadLine();
                 Environment.Exit(-1);
             }
-            
 
-            using (var ctx = new MenuDbContext())
+            try
             {
-                ctx.Database.EnsureCreated();
-                var result = ctx.Allergens.FirstOrDefault();
-
-                if(result == null)
+                using (var ctx = new MenuDbContext())
                 {
-                    foreach(string allergen in ctx.allergenValues){
-                        ctx.Allergens.Add(new Allergen(allergen));
-                    }
-                    ctx.SaveChanges();
-                }
+                    ctx.Database.EnsureCreated();
+                    var result = ctx.Allergens.FirstOrDefault();
 
+                    if (result == null)
+                    {
+                        foreach (string allergen in ctx.allergenValues)
+                        {
+                            ctx.Allergens.Add(new Allergen(allergen));
+                        }
+                        ctx.SaveChanges();
+                    }
+
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+                Environment.Exit(-1);
+            }
+            
             //Webserver handles htmls, css and basically everything we see on the web
             try
             {
@@ -50,10 +57,16 @@ namespace WebServer
 
             }catch(Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
             //
-            Console.ReadLine();   
+            string command = "";
+            do
+            {
+                Console.Write("webserver> ");
+                command = Console.ReadLine();
+            } while (!command.Equals("stop", StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }
