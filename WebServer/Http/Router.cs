@@ -20,7 +20,7 @@ namespace WebServer.Http
 
         private static HttpListenerRequest ListenerRequest;
 
-        public static int StatusCode = 400;
+        public static int StatusCode = 200;
 
         public Router()
         {
@@ -111,7 +111,7 @@ namespace WebServer.Http
             while ((nbytes = responseObject.Content.Read(buffer, 0, buffer.Length)) > 0)
                  HttpResponse.OutputStream.Write(buffer, 0, nbytes);
            // HttpResponse.OutputStream.Write(buffer, 0, buffer.Length);
-            HttpResponse.StatusCode = (int)HttpStatusCode.OK;
+            
             HttpResponse.OutputStream.Flush();
 
             HttpResponse.OutputStream.Close();

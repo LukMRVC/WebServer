@@ -8,6 +8,11 @@ namespace WebServer
     public class Options
     {
 
+        public Options()
+        {
+            Address = "localhost";
+        }
+
         [NamedArgument('m', "host", Action = ParseAction.Store,
             Const = "locahost", Description = "Database host",
             Required = false, Constraint = NumArgsConstraint.Exactly, NumArgs = 1)]
@@ -23,6 +28,11 @@ namespace WebServer
             Const = "root", Description = "Database user name",
             Required = false, Constraint = NumArgsConstraint.Exactly, NumArgs = 1)]
         public string User { get; set; }
+
+        [NamedArgument('a', "address", Action = ParseAction.Store,
+            Const = "localhost", Description = "Address to listen to",
+            Required = false, Constraint = NumArgsConstraint.Exactly, NumArgs = 1)]
+        public string Address { get; set; }
 
         [PromptIfValueMissing(MaskInput = true)]
         [NamedArgument('s', "secret", Description = "Database account secret" ,Const = "" ,Required = false, Constraint = NumArgsConstraint.Exactly,

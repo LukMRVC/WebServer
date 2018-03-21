@@ -2,7 +2,7 @@
   "profiles": {
     "WebServer": {
       "commandName": "Project",
-      "commandLineArgs": "-d webserverdb -m localhost -u golden -s password"
+      "commandLineArgs": "-d webserverdb -m localhost -u golden -s password  -a 192.168.0.111"
     }
   }
 }

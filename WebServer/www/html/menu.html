@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {{ import 'html/index.html' 'header' }}
@@ -25,18 +24,15 @@
             <div class="sk-cube sk-cube9"></div>
         </div>
     </div>
-    <div class="container-fluid">
-        <div class="row justify-content-md-center">
-            <div class="col-md-1">
+    <div class="container">
+        <div class="row" style="margin-bottom: 30px; margin-top: 10px;">
+            <div class="col-md-4">
                 <button type="button" id="add-category" class="btn btn-primary">Přidat kategorii</button>
             </div>
-            <div class="col-md-1">
-                <!--
-                I have initiate with javascript, since I have to check for selected node
-                data-toggle="modal" data-target="#addFoodModal" -->
+            <div class="col-md-4">
                 <button type="button" id="add-food" class="btn btn-info">Přidat jídlo</button>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-4">
                 <button type="button" id="remove" class="btn btn-danger">Smazat</button>
             </div>
         </div>
@@ -55,7 +51,8 @@
         var myData = [];
         var CategoryReferences; 
         var FoodReferences;
-        $.getJSON("http://localhost:1234/api/getMenuData", (result) => {
+        let url = window.location.host;
+        $.getJSON("http://" + url + "/api/getMenuData", (result) => {
             $("#loader").fadeOut(500);
             CategoryReferences = result.Categories;
             FoodReferences = result.Food;

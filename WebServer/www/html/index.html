@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
-    <link href="../css/main.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="../css/main.css" rel="stylesheet" />
     {{ section end }}
 </head>
 <body>
@@ -27,23 +27,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Uživatelé</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Databáze
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Údaje</a>
-                        <a class="dropdown-item" href="#">Připojit</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
+                <!--  <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Databáze
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Údaje</a>
+              <a class="dropdown-item" href="#">Připojit</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+      </li>-->
 
             </ul>
         </div>
     </nav>
     {{ section end }}
-    <div class="container-fluid">
+    
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -56,13 +56,11 @@
                 
             </tbody>
         </table>
-    </div>
-    <h1>It works</h1>
-    <a href="login">Redirect</a>
+    
     {{ section start 'footer' }}
     <footer class="footer">
-        <div class="container-fluid" style="background: #808080">
-            <h3>Footer</h3>
+        <div class="container">
+            &copy; Lukas Moravec 2018
         </div>
     </footer>
     {{ section end }}

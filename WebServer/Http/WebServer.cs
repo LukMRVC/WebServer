@@ -19,16 +19,16 @@ namespace WebServer.Http
 
         public static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
 
-        public WebServer() {
+        public WebServer(string address) {
             router = new Router();
-            StartEvents();
-            Start();
+            StartEvents(address);
+            Start(address);
         }
 
-        private void StartEvents()
+        private void StartEvents(string address)
         {
             serverSentEvents = new HttpListener();
-            serverSentEvents.Prefixes.Add("http://localhost:1234/SSE/");
+            serverSentEvents.Prefixes.Add("http://" + address +":1234/SSE/");
             serverSentEvents.Start();
             Task.Run(() =>
             {
@@ -75,9 +75,9 @@ namespace WebServer.Http
             });
         }
 
-        private static void Start() {
+        private static void Start(string address) {
             listener = new HttpListener();
-            listener.Prefixes.Add("http://localhost:1234/");
+            listener.Prefixes.Add("http://" + address + ":1234/");
             listener.Start();
             IAsyncResult result = listener.BeginGetContext(RequestCallback, listener);
         }

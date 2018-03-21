@@ -1,6 +1,6 @@
 ﻿var myApp = {};
 (function () {
-
+    var url = window.location.host;
     AddOrder = function (order) {
 
         let ordertext = "";
@@ -15,17 +15,14 @@
         let element = $("<tr></tr>");
         element.append($("<td></td>").text(order.Id));
         element.append($("<td></td>").text(ordertext));
-        element.append($("<td></td>").text(order.TotalPrice));
-        console.log(element);
-        console.log($("#orders"));
+        element.append($("<td></td>").text(order.TotalPrice + " Kč"));
         $("#orders").prepend(element);
     }
 
 
 
-    var source = new EventSource("http://localhost:1234/SSE/");
+    var source = new EventSource("http://" + url + "/SSE/");
     source.onmessage = (event) => {
-        console.log(JSON.parse(event.data));
         AddOrder(JSON.parse(event.data));
     };
 
