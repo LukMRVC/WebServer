@@ -31,6 +31,10 @@ namespace WebServer.Model
 
         public ICollection<Food> Food { get; set; }
 
+        public string ToCliString()
+        {
+            return string.Format("{0} {1} {2}", Id, Name, ParentId);
+        }
 
     }
 }

@@ -10,6 +10,35 @@ namespace WebServer.Model.Managers
     class FoodManager
     {
 
+        public static Food GetFood(int id)
+        {
+            Food f;
+            using(var ctx = new MenuDbContext())
+            {
+                f = ctx.Food.Where(food => food.Id == id).First();
+            }
+            return f;
+        }
+
+
+        public static Food AddFood(Food food)
+        {
+            using(var ctx = new MenuDbContext())
+            {
+                ctx.Category.Where(c => c.Id == food.CategoryId).First();
+                food.FoodAllergen = new HashSet<FoodAllergen>();
+                foreach (int AllergenId in food.Allergenes)
+                {
+                    var allergen = ctx.Allergens.Single(a => a.Id == AllergenId);
+                    food.FoodAllergen.Add(new FoodAllergen(food, allergen));
+                }
+                ctx.Food.Add(food);
+                ctx.SaveChanges();
+            }
+            return food;
+        }
+
+
         public static Food AddFood(string jsonObject)
         {
             var food = JsonConvert.DeserializeObject<Food>(jsonObject);

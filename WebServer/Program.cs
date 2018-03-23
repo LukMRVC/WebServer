@@ -67,7 +67,26 @@ namespace WebServer
             {
                 Console.Write("webserver> ");
                 command = Console.ReadLine();
+                ResolveCommand(command);
             } while (!command.Equals("stop", StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        private static void ResolveCommand(string cmd)
+        {
+            string[] args = cmd.ToLower().Split(' ');
+            if(args.Length < 2)
+            {
+                Console.WriteLine(@"Please specify arguments (list, add, remove)");
+                return;
+            }
+            switch (args[0])
+            {
+                case "food": CliArguments.FoodCmd(args);
+                    break;
+                case "category":
+                    CliArguments.CategoryCmd(args);
+                    break;
+            }
         }
     }
 }

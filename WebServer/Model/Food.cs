@@ -60,5 +60,11 @@ namespace WebServer.Model
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
+
+        public string ToCliString()
+        {
+            return string.Format("{0} {1} {2} {3} {4}", Id, Name, CategoryId, Price, Composition);
+        }
+
     }
 }
